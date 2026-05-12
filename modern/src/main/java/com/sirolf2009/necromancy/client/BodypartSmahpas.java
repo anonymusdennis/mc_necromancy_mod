@@ -2,6 +2,9 @@ package com.sirolf2009.necromancy.client;
 
 import com.sirolf2009.necromancy.api.BodyPartLocation;
 import com.sirolf2009.necromancy.api.NecroEntityBase;
+import com.sirolf2009.necromancy.bodypart.BodypartDefinitionJson;
+import com.sirolf2009.necromancy.bodypart.BodypartHitboxJson;
+import com.sirolf2009.necromancy.bodypart.BodypartVisualOffsetJson;
 import com.sirolf2009.necromancy.client.model.MinionPartCache;
 import com.sirolf2009.necromancy.client.renderer.BodypartPreviewRenderer;
 import net.minecraft.client.model.geom.ModelPart;
