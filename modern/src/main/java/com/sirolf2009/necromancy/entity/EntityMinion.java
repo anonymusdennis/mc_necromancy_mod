@@ -407,8 +407,11 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
         //  2. legsHierarchyTouchGround() called inside aiStep() (which runs in super.tick())
         //     reads fresh broadphase AABBs, eliminating the 1-4 frame ground-detection lag.
         refreshAssembly();
+        // Capture entity position before super.tick() moves the entity (gravity / push-outs)
+        // so we can delta-translate compositeCollisionBoxes afterwards.
+        Vec3 pivotBeforePhysics = position();
         if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
-            lastHierarchyTickPivot = position();
+            lastHierarchyTickPivot = pivotBeforePhysics;
             multipartTick();
             if (!level().isClientSide) {
                 compositeCollisionBoxes = multipartHierarchy.collectCollisionBoxes();
@@ -418,6 +421,24 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
         }
 
         super.tick();
+
+        // Translate compositeCollisionBoxes by the post-physics displacement so that
+        // ForgeEventHandler.onAttackEntity ray-tests see the correct position for the
+        // remainder of this tick (super.tick() may have moved the entity via gravity /
+        // push-outs after the boxes were built above).
+        if (!level().isClientSide && !compositeCollisionBoxes.isEmpty()) {
+            Vec3 posNow = position();
+            double dx = posNow.x - pivotBeforePhysics.x;
+            double dy = posNow.y - pivotBeforePhysics.y;
+            double dz = posNow.z - pivotBeforePhysics.z;
+            if (dx != 0 || dy != 0 || dz != 0) {
+                List<AABB> translated = new ArrayList<>(compositeCollisionBoxes.size());
+                for (AABB box : compositeCollisionBoxes) {
+                    translated.add(box.move(dx, dy, dz));
+                }
+                compositeCollisionBoxes = List.copyOf(translated);
+            }
+        }
 
         if (!level().isClientSide) {
             for (Map.Entry<BodyPartLocation, List<PartFeature>> e : features.entrySet()) {
