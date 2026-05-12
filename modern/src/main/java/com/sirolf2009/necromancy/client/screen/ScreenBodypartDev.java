@@ -185,9 +185,9 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         for (int si = 0; si < com.sirolf2009.necromancy.item.ItemDevKnob.SOCKET_KNOB_COUNT; si++) {
             final int socketIdx = si;
             int col = si % 3;
-            int row = si / 3;
+            int socketRow = si / 3;
             int bx = lx + col * (skW * 2 + skGap * 3);
-            int by = kbY + row * 22;
+            int by = kbY + socketRow * 22;
             addPv(Button.builder(Component.literal("S" + si + " pos"),
                 b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_SOCKET_POS, socketIdx))
                 .bounds(bx, by, skW, 18).build());
