@@ -1,6 +1,7 @@
 package com.sirolf2009.necromancy.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.sirolf2009.necromancy.api.BodyPart;
 import com.sirolf2009.necromancy.api.BodyPartLocation;
 import com.sirolf2009.necromancy.api.ISaddleAble;
@@ -144,8 +145,10 @@ public final class MinionAssembler {
         pose.pushPose();
         // Apply per-definition visual fine-tune offset (same as renderGroup / applyVisualOffset).
         ResourceLocation partId = BodyPartItemIds.inferredPartId(adapter.mobName, slot);
-        BodyPartConfigManager.INSTANCE.get(partId).ifPresent(def ->
-            pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz()));
+        BodyPartConfigManager.INSTANCE.get(partId).ifPresent(def -> {
+            pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz());
+            applyVisualRotation(pose, def.visRotYawDeg(), def.visRotPitchDeg(), def.visRotRollDeg());
+        });
 
         baked.resetPoses();
 
@@ -383,12 +386,22 @@ public final class MinionAssembler {
                                           NecroEntityBase adapter, BodyPartLocation geomLoc) {
         if (visualSpec != null) {
             pose.translate((float) visualSpec.visDx(), (float) visualSpec.visDy(), (float) visualSpec.visDz());
+            applyVisualRotation(pose, visualSpec.visRotYawDeg(), visualSpec.visRotPitchDeg(), visualSpec.visRotRollDeg());
             return;
         }
         if (adapter == null) return;
         ResourceLocation id = BodyPartItemIds.inferredPartId(adapter.mobName, geomLoc);
-        BodyPartConfigManager.INSTANCE.get(id).ifPresent(def ->
-            pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz()));
+        BodyPartConfigManager.INSTANCE.get(id).ifPresent(def -> {
+            pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz());
+            applyVisualRotation(pose, def.visRotYawDeg(), def.visRotPitchDeg(), def.visRotRollDeg());
+        });
+    }
+
+    /** Apply optional model-mesh Euler rotation (degrees, YXZ order) to the pose stack. */
+    private static void applyVisualRotation(PoseStack pose, double yaw, double pitch, double roll) {
+        if (yaw != 0.0)   pose.mulPose(Axis.YP.rotationDegrees((float) yaw));
+        if (pitch != 0.0) pose.mulPose(Axis.XP.rotationDegrees((float) pitch));
+        if (roll != 0.0)  pose.mulPose(Axis.ZP.rotationDegrees((float) roll));
     }
 
     private static void logIsolateMeshSample(MinionPartCache.Baked baked,

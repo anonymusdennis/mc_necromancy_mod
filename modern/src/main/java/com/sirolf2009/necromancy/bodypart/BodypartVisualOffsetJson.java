@@ -8,6 +8,11 @@ public final class BodypartVisualOffsetJson {
     public double dy;
     public double dz;
 
+    /** Optional Euler rotation in degrees applied to the model mesh (yaw = Y-axis, pitch = X-axis, roll = Z-axis). */
+    public double rotYawDeg;
+    public double rotPitchDeg;
+    public double rotRollDeg;
+
     public BodypartVisualOffsetJson() {}
 
     public BodypartVisualOffsetJson(double dx, double dy, double dz) {
@@ -16,7 +21,17 @@ public final class BodypartVisualOffsetJson {
         this.dz = dz;
     }
 
+    public BodypartVisualOffsetJson(double dx, double dy, double dz,
+                                    double rotYawDeg, double rotPitchDeg, double rotRollDeg) {
+        this.dx = dx;
+        this.dy = dy;
+        this.dz = dz;
+        this.rotYawDeg = rotYawDeg;
+        this.rotPitchDeg = rotPitchDeg;
+        this.rotRollDeg = rotRollDeg;
+    }
+
     public BodypartVisualOffsetJson copy() {
-        return new BodypartVisualOffsetJson(dx, dy, dz);
+        return new BodypartVisualOffsetJson(dx, dy, dz, rotYawDeg, rotPitchDeg, rotRollDeg);
     }
 }
