@@ -153,7 +153,7 @@ key_key.jei.previousCategory:key.keyboard.page.up:SHIFT
 key_key.jei.nextCategory:key.keyboard.page.down:SHIFT
 key_key.jei.closeRecipeGui:key.keyboard.escape
 key_key.jei.copy.recipe.id:key.keyboard.unknown
-soundCategory_master:0.2847682119205298
+soundCategory_master:0.4652317880794702
 soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0

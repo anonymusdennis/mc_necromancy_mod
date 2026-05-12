@@ -15,7 +15,10 @@
     "dz": 0.0,
     "rotYawDeg": 0.0,
     "rotPitchDeg": 0.0,
-    "rotRollDeg": 0.0
+    "rotRollDeg": 0.0,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "scaleZ": 1.0
   },
   "flags": {
     "head": false,
@@ -27,9 +30,9 @@
   "attachments": [
     {
       "name": "primary",
-      "ox": 0.0,
-      "oy": 1.1,
-      "oz": 0.4,
+      "ox": -0.001,
+      "oy": 1.128,
+      "oz": 0.437,
       "priority": 0,
       "hasRotationPivot": false,
       "pivotOx": 0.0,
@@ -38,9 +41,9 @@
     },
     {
       "name": "socket",
-      "ox": 0.45,
-      "oy": 1.1,
-      "oz": 0.4,
+      "ox": 0.506,
+      "oy": 1.1279999999999992,
+      "oz": 0.43700000000000006,
       "priority": 0,
       "hasRotationPivot": false,
       "pivotOx": 0.0,
