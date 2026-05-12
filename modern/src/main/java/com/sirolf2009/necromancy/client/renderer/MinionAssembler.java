@@ -148,6 +148,7 @@ public final class MinionAssembler {
         BodyPartConfigManager.INSTANCE.get(partId).ifPresent(def -> {
             pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz());
             applyVisualRotation(pose, def.visRotYawDeg(), def.visRotPitchDeg(), def.visRotRollDeg());
+            applyVisualScale(pose, def.visScaleX(), def.visScaleY(), def.visScaleZ());
         });
 
         baked.resetPoses();
@@ -387,6 +388,7 @@ public final class MinionAssembler {
         if (visualSpec != null) {
             pose.translate((float) visualSpec.visDx(), (float) visualSpec.visDy(), (float) visualSpec.visDz());
             applyVisualRotation(pose, visualSpec.visRotYawDeg(), visualSpec.visRotPitchDeg(), visualSpec.visRotRollDeg());
+            applyVisualScale(pose, visualSpec.visScaleX(), visualSpec.visScaleY(), visualSpec.visScaleZ());
             return;
         }
         if (adapter == null) return;
@@ -394,6 +396,7 @@ public final class MinionAssembler {
         BodyPartConfigManager.INSTANCE.get(id).ifPresent(def -> {
             pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz());
             applyVisualRotation(pose, def.visRotYawDeg(), def.visRotPitchDeg(), def.visRotRollDeg());
+            applyVisualScale(pose, def.visScaleX(), def.visScaleY(), def.visScaleZ());
         });
     }
 
@@ -402,6 +405,16 @@ public final class MinionAssembler {
         if (yaw != 0.0)   pose.mulPose(Axis.YP.rotationDegrees((float) yaw));
         if (pitch != 0.0) pose.mulPose(Axis.XP.rotationDegrees((float) pitch));
         if (roll != 0.0)  pose.mulPose(Axis.ZP.rotationDegrees((float) roll));
+    }
+
+    /** Apply per-axis visual scale to the pose stack; values ≤ 0 are clamped to 1.0. */
+    private static void applyVisualScale(PoseStack pose, double sx, double sy, double sz) {
+        float fx = sx > 0 ? (float) sx : 1.0f;
+        float fy = sy > 0 ? (float) sy : 1.0f;
+        float fz = sz > 0 ? (float) sz : 1.0f;
+        if (fx != 1.0f || fy != 1.0f || fz != 1.0f) {
+            pose.scale(fx, fy, fz);
+        }
     }
 
     private static void logIsolateMeshSample(MinionPartCache.Baked baked,

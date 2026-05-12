@@ -8,7 +8,7 @@ public final class BodypartDevLayout {
     /** Wide enough for two columns of tabs and checkbox captions. */
     public static final int PANEL_WIDTH = 508;
 
-    public static final int PANEL_HEIGHT = 392;
+    public static final int PANEL_HEIGHT = 458;
 
     public static final int EDITOR_LEFT = 12;
 
@@ -32,11 +32,11 @@ public final class BodypartDevLayout {
      */
     public static final int CONTENT_TOP = TAB_ROW2_Y + TAB_BUTTON_HEIGHT + 10;
 
-    public static final int PLAYER_INV_FIRST_ROW_Y = 312;
+    public static final int PLAYER_INV_FIRST_ROW_Y = 378;
 
     public static final int HOTBAR_EXTRA_GAP = 6;
 
-    public static final int INVENTORY_LABEL_Y = 296;
+    public static final int INVENTORY_LABEL_Y = 362;
 
     public static final int SLOT_PART_X = 10;
 

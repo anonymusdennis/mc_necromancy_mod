@@ -18,6 +18,9 @@ public record BodypartDefinition(
     double visRotYawDeg,
     double visRotPitchDeg,
     double visRotRollDeg,
+    double visScaleX,
+    double visScaleY,
+    double visScaleZ,
     BodypartFlagsJson flags,
     java.util.List<BodypartAttachmentJson> attachments
 ) {
@@ -44,10 +47,15 @@ public record BodypartDefinition(
             at = java.util.List.copyOf(list);
         }
         boolean validatedEffective = json.validated != null ? json.validated : true;
+        // Normalize scale: Gson may leave fields at 0.0 when absent in old JSON; treat as 1.0.
+        double sx = vo.scaleX > 0 ? vo.scaleX : 1.0;
+        double sy = vo.scaleY > 0 ? vo.scaleY : 1.0;
+        double sz = vo.scaleZ > 0 ? vo.scaleZ : 1.0;
         return new BodypartDefinition(rl, validatedEffective,
             hb.ox, hb.oy, hb.oz, hb.sx, hb.sy, hb.sz,
             vo.dx, vo.dy, vo.dz,
             vo.rotYawDeg, vo.rotPitchDeg, vo.rotRollDeg,
+            sx, sy, sz,
             fg, at);
     }
 
@@ -56,7 +64,8 @@ public record BodypartDefinition(
         j.id = id.toString();
         j.validated = validated;
         j.hitbox = new BodypartHitboxJson(hbOx, hbOy, hbOz, hbSx, hbSy, hbSz);
-        j.visualOffset = new BodypartVisualOffsetJson(visDx, visDy, visDz, visRotYawDeg, visRotPitchDeg, visRotRollDeg);
+        j.visualOffset = new BodypartVisualOffsetJson(visDx, visDy, visDz, visRotYawDeg, visRotPitchDeg, visRotRollDeg,
+            visScaleX, visScaleY, visScaleZ);
         j.flags = flags.copy();
         j.attachments = new java.util.ArrayList<>(attachments);
         return j;

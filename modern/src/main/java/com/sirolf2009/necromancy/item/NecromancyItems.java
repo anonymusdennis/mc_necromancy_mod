@@ -71,6 +71,9 @@ public final class NecromancyItems {
     public static final DeferredItem<Item> MOB_CAGE_PLACEHOLDER = REGISTRY.register("mob_cage_placeholder",
         ItemMobCagePlaceholder::new);
 
+    /** Dev-only tuning knob: scroll while held to adjust bodypart dev block parameters. */
+    public static final DeferredItem<Item> DEV_KNOB = REGISTRY.register("dev_knob", ItemDevKnob::new);
+
     // ------------------------------------------------------------------ --
     // 54 body parts (one item per (mob, part) pair).
     // ------------------------------------------------------------------ --
