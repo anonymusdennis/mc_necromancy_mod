@@ -10,9 +10,9 @@ java.base/java.lang.invoke=cpw.mods.securejarhandler
 java.base/sun.security.util=cpw.mods.securejarhandler
 --add-exports
 jdk.naming.dns/com.sun.jndi.dns=java.naming
--Dlog4j2.configurationFile=/home/headadmin/Documents/necromancy/modern/build/moddev/clientLog4j2.xml
+-Dlog4j2.configurationFile=/home/headadmin/Documents/projects/mods/necromancy/modern/build/moddev/clientLog4j2.xml
 -Djava.net.preferIPv6Addresses=system
 -DignoreList=mixinextras-neoforge-0.5.3.jar,client-extra,neoforge-
--DlegacyClassPath.file=/home/headadmin/Documents/necromancy/modern/build/moddev/clientLegacyClasspath.txt
+-DlegacyClassPath.file=/home/headadmin/Documents/projects/mods/necromancy/modern/build/moddev/clientLegacyClasspath.txt
 -Dneoforge.enableGameTest=true
 -Dneoforge.enabledGameTestNamespaces=necromancy
