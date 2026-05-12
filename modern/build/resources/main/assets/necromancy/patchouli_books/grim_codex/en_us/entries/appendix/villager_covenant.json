@@ -1,0 +1,13 @@
+{
+  "name": "Villager Traders",
+  "icon": "minecraft:emerald",
+  "category": "necromancy:appendix",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Emerald anatomists",
+      "text": "Custom trades inject random body parts behind emerald tolls — revisit villages after slaughter for fresh graft RNG."
+    }
+  ]
+}

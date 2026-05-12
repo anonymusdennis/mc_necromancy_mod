@@ -1,0 +1,20 @@
+{
+  "name": "necromancy.patchouli.book.name",
+  "landing_text": "necromancy.patchouli.book.landing",
+  "subtitle": "necromancy.patchouli.book.subtitle",
+  "book_texture": "patchouli:textures/gui/book_gray.png",
+  "filler_texture": "patchouli:textures/gui/book_gray.png",
+  "crafting_texture": "patchouli:textures/gui/crafting.png",
+  "model": "patchouli:book_gray",
+  "version": 2,
+  "creative_tab": "necromancy:necromancy",
+  "use_resource_pack": true,
+  "show_progress": false,
+  "pause_game": true,
+  "advancements_tab": "minecraft:textures/gui/advancements/tabs/adventure.png",
+  "macros": {
+    "$(warn)": "$(italic)$(4)",
+    "$(rev)": "$(bold)$(c)",
+    "$(aside)": "$(italic)$(8)"
+  }
+}

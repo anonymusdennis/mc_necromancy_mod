@@ -1,0 +1,17 @@
+{
+  "name": "Brain on a Stick",
+  "icon": "necromancy:brain_on_a_stick",
+  "category": "necromancy:dominion",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Macro leash",
+      "text": "Brandish near loyal servants to steer AI priorities — reminiscent of carrot-on-stick semantics but horrifying."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "necromancy:brain_on_a_stick"
+    }
+  ]
+}

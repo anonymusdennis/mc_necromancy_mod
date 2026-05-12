@@ -1,0 +1,9 @@
+{
+  "type": "patchouli:shapeless_book_recipe",
+  "book": "necromancy:grim_codex",
+  "ingredients": [
+    { "item": "minecraft:book" },
+    { "item": "necromancy:bone_needle" },
+    { "item": "necromancy:soul_in_a_jar" }
+  ]
+}

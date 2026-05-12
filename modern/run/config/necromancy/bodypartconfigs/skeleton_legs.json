@@ -1,0 +1,31 @@
+{
+  "id": "necromancy:skeleton_legs",
+  "hitbox": {
+    "ox": 0.0,
+    "oy": 0.55,
+    "oz": 0.0,
+    "sx": 0.4,
+    "sy": 0.65,
+    "sz": 0.35
+  },
+  "flags": {
+    "head": false,
+    "arm": false,
+    "leg": true,
+    "torso": false,
+    "special": false
+  },
+  "attachments": [
+    {
+      "name": "primary",
+      "ox": 0.0,
+      "oy": 0.0,
+      "oz": 0.0,
+      "priority": 0,
+      "hasRotationPivot": false,
+      "pivotOx": 0.0,
+      "pivotOy": 0.0,
+      "pivotOz": 0.0
+    }
+  ]
+}

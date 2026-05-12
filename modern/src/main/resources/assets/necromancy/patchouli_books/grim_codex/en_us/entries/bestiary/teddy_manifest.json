@@ -1,0 +1,19 @@
+{
+  "name": "Teddy Manifest",
+  "icon": "necromancy:teddy_spawn_egg",
+  "category": "necromancy:bestiary",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Comfort and teeth",
+      "text": "Teddy eggs bypass corpse donors — pure textile necromancy reminiscent of Botania's corporea dolls."
+    },
+    {
+      "type": "patchouli:relations",
+      "entries": [
+        "necromancy:seamstress/teddy_lullaby"
+      ]
+    }
+  ]
+}

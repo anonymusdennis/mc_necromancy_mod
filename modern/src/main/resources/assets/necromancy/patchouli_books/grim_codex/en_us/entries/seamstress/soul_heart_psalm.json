@@ -1,0 +1,24 @@
+{
+  "name": "Soul Heart Weaving",
+  "icon": "necromancy:spawner",
+  "category": "necromancy:seamstress",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Heart of the stitch",
+      "text": "Spawn egg sewing macros orbit the $(rev)Soul Heart$(warn) item — equivalent to focusing Botania terrasteel gear around a single catalyst chip."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:spawner",
+      "title": "Soul Heart item",
+      "text": "Crafted via rotten surplus + ghast tears + soul jar + heart shapeless macro — identical ratios to ancient docs."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Ingredients reminder",
+      "text": "5× Rotten Flesh$(br)2× Ghast Tear$(br)Soul Jar + Heart$(br2)JEI shows slot placements exactly."
+    }
+  ]
+}

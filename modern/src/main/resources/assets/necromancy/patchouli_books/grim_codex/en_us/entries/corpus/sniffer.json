@@ -1,0 +1,32 @@
+{
+  "name": "Sniffer",
+  "icon": "necromancy:sniffer_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:sniffer_head",
+      "title": "Sniffer",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Sniffer donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head, Torso, Legs — chunky extinct locomotion."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Pairs well with turtle-paced tanks when blending adapters."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 31
+}

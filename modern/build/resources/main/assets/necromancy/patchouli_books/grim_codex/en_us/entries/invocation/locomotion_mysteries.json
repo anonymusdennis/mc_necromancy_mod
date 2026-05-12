@@ -1,0 +1,23 @@
+{
+  "name": "Locomotion Mysteries",
+  "icon": "necromancy:zombie_legs",
+  "category": "necromancy:invocation",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Standing mode",
+      "text": "Legs slot filled → donor legs dictate gait, speed multiplier, swim quirks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Arms-as-legs heresy",
+      "text": "No legs but torso + arms → arms pretend to be legs, lifting torso, halving stride — documented in internal assembly resolver identical to legacy ARMS_AS_LEGS."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Static idols",
+      "text": "Missing critical anatomy yields STATIC profile — perfect for trophy husks."
+    }
+  ]
+}

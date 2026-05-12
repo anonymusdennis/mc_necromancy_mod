@@ -1,0 +1,23 @@
+{
+  "name": "Oath of Threads",
+  "icon": "necromancy:necronomicon",
+  "category": "necromancy:covenant",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Reader be bound",
+      "text": "You opened the $(rev)Grim Codex$(warn) willingly. Every recipe herein assumes you accept bodily autonomy violations, soul taxation, and the laughter of stitched things at dusk.$(br2)This book mirrors how $(italic)Lexica Botania$(warn) teaches layered magic: categories fan outward, entries deepen inward, and cross-links stitch chapters together."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How chapters breathe",
+      "text": "$(bold)Covenant & Reader$(warn) — ethics + navigation.$(br)$(bold)Ichor$(warn) tracks fluids and organs.$(br)$(bold)Instruments$(warn) covers actionable tools.$(br)$(bold)Sepulcher$(warn) explains blocks.$(br)$(bold)Seamstress$(warn) + $(bold)Invocation$(warn) twin the sewing grid and altar ritual.$(br)$(bold)Dominion$(warn) teaches orders.$(br)$(bold)Bestiary$(warn) lists outputs.$(br)$(bold)Corpus Catalog$(warn) enumerates donor species.$(br)$(bold)Appendix$(warn) hosts meta guidance."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Reload like a lexicographer",
+      "text": "Patchouli hot-reloads entries when you $(bold)Shift-click the pencil$(warn) in the book GUI — keep this codex open while editing JSON.$(br2)$(aside)Developer tip:$(warn) bind JEI favorites for questionable organs."
+    }
+  ]
+}

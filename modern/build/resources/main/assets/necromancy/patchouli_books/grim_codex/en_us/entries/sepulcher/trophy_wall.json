@@ -1,0 +1,19 @@
+{
+  "name": "Skull on the Wall",
+  "icon": "necromancy:skull_wall",
+  "category": "necromancy:sepulcher",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Pure ambience",
+      "text": "Decoration block echoing dungeons — no gameplay coupling beyond vibes."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:skull_wall",
+      "title": "Skull Wall",
+      "text": "Pairs with vanilla skull trophies for haunted labs."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Witch",
+  "icon": "necromancy:witch_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:witch_head",
+      "title": "Witch",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Witch donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full kit — hat silhouette optional, misery guaranteed."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Splash-style hybrids love witch legs mixed with tankier torsos."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 20
+}

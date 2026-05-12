@@ -1,0 +1,32 @@
+{
+  "name": "Enderman",
+  "icon": "necromancy:enderman_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:enderman_head",
+      "title": "Enderman",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Enderman donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full biped set: Head, Torso, Arms, Legs."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Head:$(warn) may blink the wearer away when struck — excellent panic button, risky near cliffs."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 12
+}

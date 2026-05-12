@@ -1,0 +1,24 @@
+{
+  "name": "Teddy Plush Macro",
+  "icon": "necromancy:teddy_spawn_egg",
+  "category": "necromancy:seamstress",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Soft horror",
+      "text": "Surround double wool souls with leather curtain walls — recipe is $(bold)shaped$(warn). Memorize the mantra:$(br2)LLLL / LWWL / LWWL / LLLL"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Why shaped matters",
+      "text": "Misplaced leather yields nothing — treat it like Botania's floral obsession with positional purity."
+    },
+    {
+      "type": "patchouli:relations",
+      "entries": [
+        "necromancy:bestiary/teddy_manifest"
+      ]
+    }
+  ]
+}

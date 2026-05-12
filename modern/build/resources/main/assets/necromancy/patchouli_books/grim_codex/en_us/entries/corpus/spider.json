@@ -1,0 +1,32 @@
+{
+  "name": "Spider",
+  "icon": "necromancy:spider_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:spider_head",
+      "title": "Spider",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Spider donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head, Torso, Legs."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Saddle-capable torso:$(warn) shears strip saddles like vanilla livestock — consult Dominion chapter for riding notes.$(br2)$(aside)Torso accepts saddles — surprise arachnid cavalry.$(br2)Leg tokens dictate skittering locomotion profiles."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 16
+}

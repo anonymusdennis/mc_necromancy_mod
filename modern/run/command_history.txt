@@ -1,0 +1,5 @@
+/effect give NecromancyDev minecraft:strength infinite 199 true
+/effect clear NecromancyDev
+/time set day
+/gamerule doDaylightCycle false
+/kill @e[type=necromancy:bodypart_preview]

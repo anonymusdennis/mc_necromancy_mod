@@ -1,0 +1,18 @@
+{
+  "name": "Command Litany",
+  "icon": "necromancy:necronomicon",
+  "category": "necromancy:dominion",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Radial verbs",
+      "text": "$(bold)Stay$(warn) roots minions.$(br)$(bold)Follow$(warn) resumes tailing.$(br)$(bold)Dismiss$(warn) severs contracts.$(br2)Counts display only obedient entities in range — spam responsibly."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Ownership ghosts",
+      "text": "Dismiss clears persistence similar to revoking Botania corporea networks — backup saves before experiments."
+    }
+  ]
+}

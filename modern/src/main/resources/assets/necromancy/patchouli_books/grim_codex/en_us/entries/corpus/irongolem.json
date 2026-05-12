@@ -1,0 +1,32 @@
+{
+  "name": "Iron Golem",
+  "icon": "necromancy:irongolem_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:irongolem_head",
+      "title": "Iron Golem",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Iron Golem donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full heavy biped analog."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Torso and limbs skew toward slow, crushing locomotion — anchor tanks."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 24
+}

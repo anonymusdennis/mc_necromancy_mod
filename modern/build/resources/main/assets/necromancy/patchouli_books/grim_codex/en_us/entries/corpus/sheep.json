@@ -1,0 +1,32 @@
+{
+  "name": "Sheep",
+  "icon": "necromancy:sheep_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:sheep_head",
+      "title": "Sheep",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Sheep donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full quadruped set."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Woolly grafts pair with goat legs for alpine comedians."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 23
+}

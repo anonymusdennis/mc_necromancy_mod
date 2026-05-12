@@ -1,0 +1,24 @@
+{
+  "name": "Raising the Altar",
+  "icon": "necromancy:altar",
+  "category": "necromancy:sepulcher",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Plank anchor ritual",
+      "text": "Stand on any vanilla plank column. Along one horizontal cardinal there must exist $(rev)two contiguous cobblestone blocks$(warn).$(br2)Use the Necronomicon on the plank face; the mod replaces plank→altar while cobbles→altar cousin blocks, preserving facing."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "ASCII vigil",
+      "text": "[P][C][C] layout where P becomes the interactive altar facing outward and each C becomes cousin altar brick.$(br2)Rotate yourself — each cardinal is legal provided geometry matches."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:altar_block",
+      "title": "Altar Block",
+      "text": "Cosmetic cousin — does not host GUI summoning alone."
+    }
+  ]
+}

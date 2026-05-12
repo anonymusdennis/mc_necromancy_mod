@@ -1,0 +1,32 @@
+{
+  "name": "Frog",
+  "icon": "necromancy:frog_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:frog_head",
+      "title": "Frog",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Frog donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full limb coverage including arms."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Hop locomotion surfaces often — excellent gap closers."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 29
+}

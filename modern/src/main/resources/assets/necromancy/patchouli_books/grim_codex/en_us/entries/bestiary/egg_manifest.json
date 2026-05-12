@@ -1,0 +1,25 @@
+{
+  "name": "Spawn Egg Manifest",
+  "icon": "necromancy:minion_spawn_egg",
+  "category": "necromancy:bestiary",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Eggs as receipts",
+      "text": "Successful sewing yields eggs referencing:$(br)• Generic stitched $(rev)Minions$(warn)$(br)• Specialist $(rev)Night Crawlers$(warn), $(rev)Isaac$(warn), plush $(rev)Teddies$(warn)."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:nightcrawler_spawn_egg",
+      "title": "Night Crawler Egg",
+      "text": "Summons stalking horror mob."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:isaac_spawn_egg",
+      "title": "Isaac Egg",
+      "text": "Summons Issac-themed antagonists — consult Isaac chapter."
+    }
+  ]
+}

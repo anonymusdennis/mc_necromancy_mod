@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "${mod_version}-mc${mc_version}"
+group = mod_group_id
+archivesBaseName = 'Necromancy'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+minecraft {
+    version = "${mc_version}-${forge_version}"
+    runDir = 'run'
+    mappings = mcp_mappings
+
+    replace '@VERSION@', project.version
+    replaceIn 'Necromancy.java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // none required
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'  : mod_id,
+            'Specification-Vendor' : 'AtomicStryker/sirolf2009',
+            'Implementation-Title' : project.name,
+            'Implementation-Version': project.version,
+        ])
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Allay",
+  "icon": "necromancy:allay_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:allay_head",
+      "title": "Allay",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Allay donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head, Torso, Arm — $(rev)no dedicated legs$(warn)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Expect ARMS_AS_LEGS pivots or borrowed legs from another donor."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 26
+}

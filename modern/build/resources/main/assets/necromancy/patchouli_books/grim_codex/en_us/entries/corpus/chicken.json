@@ -1,0 +1,32 @@
+{
+  "name": "Chicken",
+  "icon": "necromancy:chicken_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:chicken_head",
+      "title": "Chicken",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Chicken donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full tiny biped coverage."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Hop-heavy companions — legs transmit poultry locomotion to your assembly."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 18
+}

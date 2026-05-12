@@ -1,0 +1,6 @@
+[multipart]
+	#Append multipart telemetry lines to the F3 debug text panel.
+	#Works together with common.toml multipart profiling flags — pure clients only see receive-side net stats.
+	telemetryF3Lines = false
+	#Draw a compact multipart telemetry HUD in the top-left corner.
+	telemetryCornerHud = false

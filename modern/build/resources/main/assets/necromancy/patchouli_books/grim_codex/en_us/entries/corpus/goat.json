@@ -1,0 +1,32 @@
+{
+  "name": "Goat",
+  "icon": "necromancy:goat_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:goat_head",
+      "title": "Goat",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Goat donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head, Torso, Legs — mountain hop locomotion."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Ram-ready silhouettes; blend with cow torso for chaotic dairy."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 34
+}

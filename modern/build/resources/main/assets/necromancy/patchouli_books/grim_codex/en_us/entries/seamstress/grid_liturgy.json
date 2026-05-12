@@ -1,0 +1,23 @@
+{
+  "name": "Four-by-Four Grid",
+  "icon": "necromancy:bone_needle",
+  "category": "necromancy:seamstress",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Square theology",
+      "text": "The sewing matrix mirrors Botania's crafting halo philosophy but skews square: sixteen slots swallow limbs like runic plates swallow petals.$(br2)$(bold)Shapeless$(warn) recipes ignore orientation so long as multiset matches.$(br)$(bold)Shaped$(warn) recipes honor rows exactly — teddy plush recipe forms a leather cradle around wool hearts."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Needle etiquette",
+      "text": "Bone needles occupy their dedicated slot — durability drains per craft identical to legacy balancing."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Where JEI enters",
+      "text": "Because dozens of donor-specific recipes exist, we mirror Botania's reliance on external lexicons:$(br2)$(italic)Use JEI's Sewing category$(warn) — filter by output egg or ingredient chunk."
+    }
+  ]
+}

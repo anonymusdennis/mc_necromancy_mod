@@ -1,0 +1,18 @@
+{
+  "name": "Altar Slot Schema",
+  "icon": "necromancy:altar",
+  "category": "necromancy:invocation",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Seven focal slots",
+      "text": "$(bold)Slot 0:$(warn) Jar of Blood — only blood jars accepted.$(br)$(bold)Slot 1:$(warn) Soul jar catalyst opposite blood.$(br)$(bold)Slots 2-6:$(warn) Head, Torso, Legs, Right Arm, Left Arm — filters reject misplaced anatomy."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Why duplicates matter",
+      "text": "Arm items tagged $(italic)ArmLeft$(warn) accept either lateral slot — adapters overload metadata like Botania flowers sharing textures."
+    }
+  ]
+}

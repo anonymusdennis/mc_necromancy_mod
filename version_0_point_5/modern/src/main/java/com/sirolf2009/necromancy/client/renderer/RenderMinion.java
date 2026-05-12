@@ -1,0 +1,72 @@
+package com.sirolf2009.necromancy.client.renderer;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import com.sirolf2009.necromancy.api.BodyPartLocation;
+import com.sirolf2009.necromancy.api.NecroEntityBase;
+import com.sirolf2009.necromancy.entity.EntityMinion;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+
+import java.util.EnumMap;
+
+/**
+ * Custom entity renderer for {@link EntityMinion}.
+ *
+ * <p>This renderer applies the standard {@link net.minecraft.client.renderer.entity.LivingEntityRenderer}
+ * outer transform (lift, mirror Y, body-yaw rotate) and then delegates the
+ * body-part assembly to {@link MinionAssembler}, which is shared with the
+ * altar preview renderer.
+ */
+public class RenderMinion extends EntityRenderer<EntityMinion> {
+
+    /** Used for the entity texture lookup; the actual draw uses per-part textures. */
+    private static final ResourceLocation FALLBACK =
+        ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png");
+
+    public RenderMinion(EntityRendererProvider.Context ctx) {
+        super(ctx);
+        this.shadowRadius = 0.5F;
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(EntityMinion entity) {
+        var head = entity.getBodyPart(BodyPartLocation.Head);
+        return head == null ? FALLBACK : head.texture;
+    }
+
+    @Override
+    public void render(EntityMinion minion, float entityYaw, float partialTicks,
+                       PoseStack pose, MultiBufferSource buf, int light) {
+        super.render(minion, entityYaw, partialTicks, pose, buf, light);
+
+        EnumMap<BodyPartLocation, NecroEntityBase> adapters = new EnumMap<>(BodyPartLocation.class);
+        for (BodyPartLocation loc : BodyPartLocation.values()) {
+            NecroEntityBase a = minion.getBodyPart(loc);
+            if (a != null) adapters.put(loc, a);
+        }
+
+        float bodyYaw   = Mth.lerp(partialTicks, minion.yBodyRotO, minion.yBodyRot);
+        float headYaw   = Mth.lerp(partialTicks, minion.yHeadRotO, minion.yHeadRot) - bodyYaw;
+        float headPitch = Mth.lerp(partialTicks, minion.xRotO, minion.getXRot());
+        float age       = (float) minion.tickCount + partialTicks;
+        float walk      = minion.walkAnimation.position(partialTicks);
+        float speed     = Mth.clamp(minion.walkAnimation.speed(partialTicks), 0F, 1F);
+        float attackAnim = minion.getAttackAnim(partialTicks);
+
+        pose.pushPose();
+        // Standard living-entity outer transform.
+        pose.translate(0F, 1.5F, 0F);
+        pose.scale(-1F, -1F, 1F);
+        pose.mulPose(Axis.YP.rotationDegrees(180F - bodyYaw));
+
+        MinionAssembler.renderAssembled(minion, adapters, minion.isSaddled(),
+            attackAnim, walk, speed, age, headYaw, headPitch,
+            pose, buf, light);
+
+        pose.popPose();
+    }
+}

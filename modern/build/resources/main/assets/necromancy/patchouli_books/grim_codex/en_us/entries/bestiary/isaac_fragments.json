@@ -1,0 +1,24 @@
+{
+  "name": "Isaac Fragments",
+  "icon": "necromancy:isaacs_severed_head",
+  "category": "necromancy:bestiary",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Headgear artillery",
+      "text": "$(rev)Isaac's Severed Head$(warn) fires tears while worn — binds to client keyhandler + sneak combos."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Ammo taxonomy",
+      "text": "Plain $(rev)tear$(warn) vs $(rev)tear_blood$(warn) items correspond to projectile palettes — stockpile both."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:isaacs_severed_head_trophy",
+      "title": "Trophy Variant",
+      "text": "Vanity duplicate celebrating boss kills."
+    }
+  ]
+}

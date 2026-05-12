@@ -1,0 +1,25 @@
+{
+  "name": "Blood Circulation",
+  "icon": "necromancy:bucket_blood",
+  "category": "necromancy:ichor",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Hydraulic theology",
+      "text": "Blood is both fluid and currency. Source blocks behave like thin lava visually but obey mod-specific collision rules — bucket them like water sources once you own $(rev)Bucket of Blood$(warn).$(br2)Blood fills altar contracts, converts into jars for rituals, and stains Isaac-themed ammunition."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:jar_of_blood",
+      "title": "Jar of Blood",
+      "text": "Portable offering unit accepted $(bold)only$(warn) by the Summoning Altar's blood slot."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "necromancy:bucket_blood",
+      "recipe2": "necromancy:jar_of_blood_from_bucket",
+      "title": "Logistics chain"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "JEI as Second Sight",
+  "icon": "minecraft:spyglass",
+  "category": "necromancy:covenant",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Why JEI matters",
+      "text": "Install $(rev)Just Enough Items$(warn). The mod exposes:$(br2)• Every vanilla crafting recipe we ship as datapacks.$(br)• A dedicated $(bold)Sewing Machine$(warn) category mirroring the 4×4 flesh grid.$(br)• A $(bold)Necromancy Handbook$(warn) tab with prose blurbs per item.$(br2)This codex explains $(italic)why$(warn); JEI shows $(italic)exact ingredient matrices$(warn)."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Hop sideways",
+      "entries": [
+        "necromancy:appendix/recipe_viewers",
+        "necromancy:seamstress/grid_liturgy"
+      ]
+    }
+  ]
+}

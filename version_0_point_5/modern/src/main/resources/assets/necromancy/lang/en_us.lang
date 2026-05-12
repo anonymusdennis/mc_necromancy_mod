@@ -1,0 +1,43 @@
+# Necromancy Mod Language File (1.12.2)
+
+# Creative Tabs
+itemGroup.Necromancy=Necromancy
+itemGroup.BodyParts=Necromancy: Body Parts
+
+# Generic Items
+item.ItemNecromancy.0.name=Bone Needle
+item.ItemNecromancy.1.name=Soul in a Jar
+item.ItemNecromancy.2.name=Jar of Blood
+item.ItemNecromancy.3.name=Brain on a Stick
+
+# Organs
+item.Organs.0.name=Brains
+item.Organs.1.name=Heart
+item.Organs.2.name=Muscle
+item.Organs.3.name=Lungs
+item.Organs.4.name=Skin
+
+# Weapons / Tools
+item.ItemScythe.name=Blood Scythe
+item.ItemScytheBone.name=Bone Scythe
+item.BucketBlood.name=Blood Bucket
+item.Necronomicon.name=Necronomicon
+item.NecroSpawner.name=Isaac's Soul Heart
+
+# Armor
+item.ItemIsaacsHead.name=Isaac's Severed Head
+
+# Blocks
+tile.summoning_altar.name=Summoning Altar
+tile.altar_block.name=Altar Building Block
+tile.sewing_machine.name=Sewing Machine
+tile.flowing_blood.name=Flowing Blood
+tile.skull_wall.name=Skull Wall
+
+# Achievements
+achievement.necromancy.necronomicon=Necronomicon
+achievement.necromancy.necronomicon.desc=Craft the Necronomicon
+achievement.necromancy.sewing=Sewing Machine
+achievement.necromancy.sewing.desc=Craft a Sewing Machine
+achievement.necromancy.spawn=Minion!
+achievement.necromancy.spawn.desc=Animate your first minion

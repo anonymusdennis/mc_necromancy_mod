@@ -1,0 +1,32 @@
+{
+  "name": "Creeper",
+  "icon": "necromancy:creeper_torso",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:creeper_torso",
+      "title": "Creeper",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Creeper donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Torso and Legs only — $(rev)no head token$(warn). Expect hiss-adjacent sillhouettes when paired with humanoid heads elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Torso/legs-only donors excel when another adapter supplies head voice — experiment carefully."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 11
+}

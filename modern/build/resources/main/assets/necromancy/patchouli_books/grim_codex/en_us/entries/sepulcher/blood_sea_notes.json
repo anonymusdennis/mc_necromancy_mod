@@ -1,0 +1,19 @@
+{
+  "name": "Blood Seas",
+  "icon": "necromancy:bucket_blood",
+  "category": "necromancy:sepulcher",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Fluid blocks",
+      "text": "Blood sources behave as custom fluids — no item block, only buckets + world pools.$(br2)Worldgen may scatter chalices — explore cautiously."
+    },
+    {
+      "type": "patchouli:relations",
+      "entries": [
+        "necromancy:ichor/blood_circulation"
+      ]
+    }
+  ]
+}

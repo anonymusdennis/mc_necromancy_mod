@@ -1,0 +1,32 @@
+{
+  "name": "Cave Spider",
+  "icon": "necromancy:cavespider_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:cavespider_head",
+      "title": "Cave Spider",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Cave Spider donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head, Torso, Legs — compact venomous donor."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Blend with beefier mobs when you need poison aesthetics without bulk."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 22
+}

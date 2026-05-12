@@ -1,0 +1,6 @@
+[
+  {"version":1},
+  {"ingredient":{"id":"necromancy:muscle"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"necromancy:sewing_machine"},"type":"item_stack","bookmarkType":"INGREDIENT"},
+  {"ingredient":{"id":"necromancy:axolotl_head"},"type":"item_stack","bookmarkType":"INGREDIENT"}
+]

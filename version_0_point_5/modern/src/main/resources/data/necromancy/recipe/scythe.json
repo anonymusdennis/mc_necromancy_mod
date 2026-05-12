@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["IH ", " S ", " B "],
+  "key": {
+    "I": { "item": "minecraft:obsidian" },
+    "H": { "item": "minecraft:iron_hoe" },
+    "S": { "item": "minecraft:stick" },
+    "B": { "item": "necromancy:jar_of_blood" }
+  },
+  "result": { "id": "necromancy:scythe", "count": 1 }
+}

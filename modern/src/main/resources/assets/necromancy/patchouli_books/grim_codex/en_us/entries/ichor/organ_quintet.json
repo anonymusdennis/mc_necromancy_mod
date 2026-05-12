@@ -1,0 +1,31 @@
+{
+  "name": "Quintet of Organs",
+  "icon": "necromancy:heart",
+  "category": "necromancy:ichor",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Five edible horrors",
+      "text": "$(rev)Brains, Heart, Muscle, Lungs, Skin$(warn) drop from compatible corpses via loot tables tuned like the legacy mod.$(br2)They taste foul but stitch true — each organ occupies sewing macros reminiscent of Botania rune recipes: predictable slots, thematic outputs."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:brains",
+      "title": "Brains",
+      "text": "Greasy stuffing for spawn eggs."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:heart",
+      "title": "Heart",
+      "text": "Anchors soul-heart weaving."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:muscle",
+      "title": "Muscle",
+      "text": "Bulk tissue bridging limb clusters."
+    }
+  ]
+}

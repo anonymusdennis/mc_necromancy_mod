@@ -1,0 +1,18 @@
+{
+  "name": "Skin ↔ Leather",
+  "icon": "necromancy:skin",
+  "category": "necromancy:ichor",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Industrial flaying",
+      "text": "Throw leather through the sewing needle's logic to unwrap eight $(rev)Skin$(warn) sheets — identical conversion rate to the historic port."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Why stacks matter",
+      "text": "Skin wraps entire limb bundles before Soul Hearts finalize an egg — shortages stall mid-recipe like forgetting Botania runes mid-apothecary craft."
+    }
+  ]
+}

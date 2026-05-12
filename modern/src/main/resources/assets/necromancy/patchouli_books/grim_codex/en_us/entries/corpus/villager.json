@@ -1,0 +1,32 @@
+{
+  "name": "Villager",
+  "icon": "necromancy:villager_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:villager_head",
+      "title": "Villager",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Villager donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Complete biped limbs."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Trade for exotic parts with wandering necromancers — see Appendix."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 19
+}

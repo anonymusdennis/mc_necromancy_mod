@@ -1,0 +1,19 @@
+{
+  "name": "Soul Taxation",
+  "icon": "necromancy:soul_in_a_jar",
+  "category": "necromancy:ichor",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Capturing willing screams",
+      "text": "Souls enter jars when $(rev)eligible scythe kills$(warn) convert pity into inventory clutter. Stockpile jars — altars demand one beside blood.$(br2)Soul jars also participate in crafting soul hearts at the sewing grid."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:soul_in_a_jar",
+      "title": "Soul in a Jar",
+      "text": "Catalyst slot opposite blood on the altar. Without both jars the altar sulks."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Wolf",
+  "icon": "necromancy:wolf_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:wolf_head",
+      "title": "Wolf",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Wolf donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "$(rev)Head token only$(warn). No torso/legs means extremely constrained assemblies."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(aside)Lone-head previews echo spirits anchored without bodies — pair with foreign limbs deliberately."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 25
+}

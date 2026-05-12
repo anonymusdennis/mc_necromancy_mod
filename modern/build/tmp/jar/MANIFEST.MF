@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Specification-Title: Necromancy
+Specification-Vendor: AtomicStryker, sirolf2009, Mr_boness, Fabiulu, The
+ BlackPixel, Necromancy 1.21.1 port
+Specification-Version: 1
+Implementation-Title: Necromancy
+Implementation-Version: 2.0.0
+Implementation-Vendor: AtomicStryker, sirolf2009, Mr_boness, Fabiulu, Th
+ eBlackPixel, Necromancy 1.21.1 port
+

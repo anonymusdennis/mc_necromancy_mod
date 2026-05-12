@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-05-10T20:50:20" hostname="admin" time="0.005">
+  <properties/>
+  <testcase name="topologyDeltaAssignAndClearRoundTrip()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" time="0.002"/>
+  <testcase name="summarizeIncludesHeaderFieldsWhenCrcPresent()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" time="0.0"/>
+  <testcase name="transformDeltaHalfPrecisionAndTrailingExtensionIgnored()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" time="0.001"/>
+  <testcase name="damageDeltaRoundTripPackedFlags()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" time="0.001"/>
+  <testcase name="transformDeltaRoundTripFullPrecision()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" time="0.0"/>
+  <testcase name="transformDeltaTopologyMismatchAndBadCrc()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationBinaryTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

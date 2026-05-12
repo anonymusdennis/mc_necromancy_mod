@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sirolf2009.necromancy.multipart.broadphase.SpatialMultipartBroadphaseTierTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-05-10T20:50:20" hostname="admin" time="0.001">
+  <properties/>
+  <testcase name="colossalBoundsFallBackToOversizedBucket()" classname="com.sirolf2009.necromancy.multipart.broadphase.SpatialMultipartBroadphaseTierTest" time="0.0"/>
+  <testcase name="largeFlatMobUsesMacroTierNotFineDuplication()" classname="com.sirolf2009.necromancy.multipart.broadphase.SpatialMultipartBroadphaseTierTest" time="0.001"/>
+  <testcase name="countCellsOverlappingMatchesForEachCellCount()" classname="com.sirolf2009.necromancy.multipart.broadphase.SpatialMultipartBroadphaseTierTest" time="0.0"/>
+  <testcase name="chunkFilteredOversizedPredicateSkipsEntity()" classname="com.sirolf2009.necromancy.multipart.broadphase.SpatialMultipartBroadphaseTierTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

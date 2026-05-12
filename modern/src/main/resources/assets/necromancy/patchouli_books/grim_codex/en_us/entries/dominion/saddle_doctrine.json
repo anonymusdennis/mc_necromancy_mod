@@ -1,0 +1,18 @@
+{
+  "name": "Saddle Doctrine",
+  "icon": "minecraft:saddle",
+  "category": "necromancy:dominion",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Which thoraxes kneel",
+      "text": "$(rev)Cow, Pig, Spider, Squid, Camel$(warn) torsos expose saddling hooks via ISaddleAble adapters.$(br2)Right-click saddle to mount if you're recognized owner — shears strip saddles gently."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Rendering clues",
+      "text": "Borrowed saddle textures overlay borrowed geometry — mismatched mob frankensteins still display saddles when torso donor qualifies."
+    }
+  ]
+}

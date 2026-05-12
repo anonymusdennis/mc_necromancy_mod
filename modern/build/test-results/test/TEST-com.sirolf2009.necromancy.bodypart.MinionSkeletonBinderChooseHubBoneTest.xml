@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sirolf2009.necromancy.bodypart.MinionSkeletonBinderChooseHubBoneTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-05-10T20:50:20" hostname="admin" time="0.002">
+  <properties/>
+  <testcase name="prefersArmRightWhenBothArmsPresentWithoutTorsoHeadLegs()" classname="com.sirolf2009.necromancy.bodypart.MinionSkeletonBinderChooseHubBoneTest" time="0.001"/>
+  <testcase name="prefersTorsoOverOtherSlots()" classname="com.sirolf2009.necromancy.bodypart.MinionSkeletonBinderChooseHubBoneTest" time="0.0"/>
+  <testcase name="fallsBackToHeadWhenTorsoMissing()" classname="com.sirolf2009.necromancy.bodypart.MinionSkeletonBinderChooseHubBoneTest" time="0.0"/>
+  <testcase name="emptyMapFallsThroughToArmLeftPlaceholder()" classname="com.sirolf2009.necromancy.bodypart.MinionSkeletonBinderChooseHubBoneTest" time="0.0"/>
+  <testcase name="armLeftWhenOnlyArmLeftFilled()" classname="com.sirolf2009.necromancy.bodypart.MinionSkeletonBinderChooseHubBoneTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

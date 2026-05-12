@@ -1,0 +1,17 @@
+{
+  "name": "Buckets & Basins",
+  "icon": "necromancy:bucket_blood",
+  "category": "necromancy:tools",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Fluid logistics",
+      "text": "Buckets cart source blood across dimensions; combine with empty jars at crafting stations per datapack recipes."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "necromancy:bucket_blood"
+    }
+  ]
+}

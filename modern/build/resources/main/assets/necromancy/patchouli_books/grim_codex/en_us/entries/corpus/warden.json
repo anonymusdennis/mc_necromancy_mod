@@ -1,0 +1,32 @@
+{
+  "name": "Warden",
+  "icon": "necromancy:warden_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:warden_head",
+      "title": "Warden",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Warden donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Complete biped horror kit."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "Darkness sensors not ported verbatim — treat pieces as prestige trophies."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 32
+}

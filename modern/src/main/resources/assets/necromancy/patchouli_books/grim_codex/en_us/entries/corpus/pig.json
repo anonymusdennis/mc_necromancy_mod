@@ -1,0 +1,32 @@
+{
+  "name": "Pig",
+  "icon": "necromancy:pig_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:pig_head",
+      "title": "Pig",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Pig donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Full quadruped coverage."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Saddle-capable torso:$(warn) shears strip saddles like vanilla livestock — consult Dominion chapter for riding notes.$(br2)$(aside)Torso is saddled — pigs remain iconic mounts for stitched mash-ups."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 13
+}

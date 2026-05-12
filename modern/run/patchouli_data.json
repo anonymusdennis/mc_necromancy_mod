@@ -1,0 +1,19 @@
+{
+  "bookGuiScale": 0,
+  "clickedVisualize": false,
+  "bookData": {
+    "necromancy:grim_codex": {
+      "viewedEntries": [
+        "necromancy:appendix/villager_covenant",
+        "necromancy:appendix/recipe_viewers",
+        "necromancy:corpus/catalog_preface",
+        "necromancy:corpus/cow",
+        "necromancy:invocation/offering_schema",
+        "necromancy:corpus/squid",
+        "necromancy:seamstress/grid_liturgy"
+      ],
+      "bookmarks": [],
+      "completedManualQuests": []
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:leather" },
+    { "item": "minecraft:glass_pane" },
+    { "item": "necromancy:soul_in_a_jar" },
+    { "item": "minecraft:amethyst_shard" }
+  ],
+  "result": { "id": "necromancy:necro_goggles", "count": 1 }
+}

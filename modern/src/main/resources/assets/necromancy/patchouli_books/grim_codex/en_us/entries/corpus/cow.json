@@ -1,0 +1,32 @@
+{
+  "name": "Cow",
+  "icon": "necromancy:cow_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:cow_head",
+      "title": "Cow",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Cow donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Provides Head, Torso, Arm, and Legs tokens. $(rev)Cow$(warn) pieces skew toward slow quadruped locomotion when legs carry the profile."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Saddle-capable torso:$(warn) shears strip saddles like vanilla livestock — consult Dominion chapter for riding notes.$(br2)$(aside)Torso implements saddling — ride your minion like livestock once saddled.$(br2)Harvest pieces like any donor mob; verify sewing compatibility in JEI before wasting organs."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 10
+}

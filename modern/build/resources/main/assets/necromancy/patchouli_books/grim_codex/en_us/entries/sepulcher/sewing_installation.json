@@ -1,0 +1,17 @@
+{
+  "name": "Sewing Machine",
+  "icon": "necromancy:sewing_machine",
+  "category": "necromancy:sepulcher",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Industrial seamstress",
+      "text": "Place like smelters — opens a 4×4 crafting canvas plus needle slot. Wrong needles abort crafts silently like Botania apothecaries without petals."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "necromancy:sewing_machine"
+    }
+  ]
+}

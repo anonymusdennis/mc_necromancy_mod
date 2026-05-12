@@ -1,0 +1,25 @@
+{
+  "name": "Necronomicon",
+  "icon": "necromancy:necronomicon",
+  "category": "necromancy:tools",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Two sacraments",
+      "text": "$(bold)On planks:$(warn) searches cardinal cobblestones to raise an altar triptych (altar block flanked by decorative cousin blocks).$(br2)$(bold)In air:$(warn) opens dominion UI counting obedient minions and issuing Stay/Follow/Dismiss verbs."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "necromancy:necronomicon"
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Follow-up reading",
+      "entries": [
+        "necromancy:sepulcher/altar_genesis",
+        "necromancy:dominion/command_litany"
+      ]
+    }
+  ]
+}

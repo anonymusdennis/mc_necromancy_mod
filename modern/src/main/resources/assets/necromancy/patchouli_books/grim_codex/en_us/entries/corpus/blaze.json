@@ -1,0 +1,32 @@
+{
+  "name": "Blaze",
+  "icon": "necromancy:blaze_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:blaze_head",
+      "title": "Blaze",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Blaze donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head plus blaze rod torso cluster — $(rev)no arm/legs tokens$(warn)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Torso:$(warn) smothers fire while worn — exceptional defensive graft."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 33
+}

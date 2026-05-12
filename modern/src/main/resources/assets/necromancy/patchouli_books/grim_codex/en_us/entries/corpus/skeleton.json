@@ -1,0 +1,32 @@
+{
+  "name": "Skeleton",
+  "icon": "necromancy:skeleton_torso",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:skeleton_torso",
+      "title": "Skeleton",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Skeleton donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Torso, Arms, Legs — skull belongs to $(italic)other$(warn) mods; use a donor head if you want a faced minion."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Arms:$(warn) grant an extra arrow after melee swings — volley harassers adore these grafts."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 15
+}

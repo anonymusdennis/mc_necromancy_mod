@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["IH ", " S ", " B "],
+  "key": {
+    "I": { "item": "minecraft:obsidian" },
+    "H": { "item": "necromancy:scythe" },
+    "S": { "item": "minecraft:bone" },
+    "B": { "item": "minecraft:diamond" }
+  },
+  "result": { "id": "necromancy:scythe_bone", "count": 1 }
+}

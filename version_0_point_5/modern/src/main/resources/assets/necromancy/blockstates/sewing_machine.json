@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "necromancy:block/sewing_machine" },
+    "facing=south": { "model": "necromancy:block/sewing_machine", "y": 180 },
+    "facing=east":  { "model": "necromancy:block/sewing_machine", "y": 90 },
+    "facing=west":  { "model": "necromancy:block/sewing_machine", "y": 270 }
+  }
+}

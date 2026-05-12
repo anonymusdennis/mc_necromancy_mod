@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationSerializationBenchTest" tests="3" skipped="3" failures="0" errors="0" timestamp="2026-05-10T20:50:20" hostname="admin" time="0.001">
+  <properties/>
+  <testcase name="benchDamageEncodeDecode()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationSerializationBenchTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="benchTopologyEncodeDecode()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationSerializationBenchTest" time="0.001">
+    <skipped/>
+  </testcase>
+  <testcase name="benchTransformEncodeDecodeReuseScratch()" classname="com.sirolf2009.necromancy.multipart.network.binary.MultipartReplicationSerializationBenchTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

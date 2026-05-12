@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "necromancy:block/bodypart_dev_editor", "y": 180 },
+    "facing=south": { "model": "necromancy:block/bodypart_dev_editor", "y": 0 },
+    "facing=west":  { "model": "necromancy:block/bodypart_dev_editor", "y": 90 },
+    "facing=east":  { "model": "necromancy:block/bodypart_dev_editor", "y": 270 }
+  }
+}

@@ -1,0 +1,38 @@
+[client]
+	#Render the OBJ-based 'special scythe' model for whitelisted players.
+	renderSpecialScythe = true
+	#When true, fetch the legacy specialFolk.txt list at startup so
+	#the special scythe renderer activates for those player names.
+	#Disabled by default in 1.21.1 since it requires outbound HTTP.
+	enableSpecialFolkFetch = false
+
+[spawning]
+	#1-in-N chance for a zombie spawn to be replaced by a Night Crawler.
+	# Default: 30
+	# Range: 1 ~ 1000
+	rarityNightCrawlers = 30
+	#1-in-N chance for a skeleton spawn to be replaced by an Isaac.
+	# Default: 60
+	# Range: 1 ~ 1000
+	rarityIsaacs = 60
+
+[minions]
+	#Maximum number of minions a single player may have summoned.
+	#Set to -1 to disable the cap (matches the original behaviour).
+	# Default: -1
+	# Range: -1 ~ 4096
+	maxMinionSpawn = -1
+	#Use legacy five-slot yaw-only AABB assembly for minions instead of TransformHierarchy collision.
+	#Enable temporarily if multipart soak tests reveal regressions.
+	minionLegacyCompositeCollision = false
+	#Route incoming damage through per-part hitboxes with independent HP pools (experimental).
+	#Requires multipart collision (minionLegacyCompositeCollision=false).
+	minionMultipartPerPartHealth = false
+
+[multipart]
+	#Developer multipart profiling (transform propagation, broad-phase publishes, queries, topology edits, net payloads, activity transitions).
+	#Leave false on production servers — every hook short-circuits when disabled.
+	enableMultipartTelemetry = false
+	#When enableMultipartTelemetry is true: record aggregates only (skip per-entity buckets).
+	#Recommended for large multiplayer stress runs.
+	stressTelemetryLightweight = false

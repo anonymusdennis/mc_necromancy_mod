@@ -1,0 +1,17 @@
+{
+  "name": "Bone Needle",
+  "icon": "necromancy:bone_needle",
+  "category": "necromancy:tools",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Sacrament of puncture",
+      "text": "The sewing machine refuses greedy fingers — only bone needles channel mana-like durability drains while knitting corpses."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "necromancy:bone_needle"
+    }
+  ]
+}

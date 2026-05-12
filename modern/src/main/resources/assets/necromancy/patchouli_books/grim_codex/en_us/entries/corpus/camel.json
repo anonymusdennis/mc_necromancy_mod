@@ -1,0 +1,32 @@
+{
+  "name": "Camel",
+  "icon": "necromancy:camel_head",
+  "category": "necromancy:corpus",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "necromancy:camel_head",
+      "title": "Camel",
+      "text": "$(rev)Corpus entry:$(warn) fragments torn from Camel donors keep their cultural locomotion hints even when stitched elsewhere."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Recorded anatomy",
+      "text": "Head, Torso, Legs — tall quadruped locomotion."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stitcher's marginalia",
+      "text": "$(rev)Saddle-capable torso:$(warn) shears strip saddles like vanilla livestock — consult Dominion chapter for riding notes.$(br2)$(aside)Torso supports saddles$(warn); desert raider vibes abound."
+    },
+    {
+      "type": "patchouli:relations",
+      "title": "Continue reading",
+      "entries": [
+        "necromancy:seamstress/grid_liturgy",
+        "necromancy:invocation/offering_schema"
+      ]
+    }
+  ],
+  "sortnum": 28
+}

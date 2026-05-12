@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "necromancy",
+    "name": "Necromancy",
+    "description": "Sew your own unholy Minions together. Take body parts from slain foes, stitch them together, and reanimate the horrifying result.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://www.curseforge.com/minecraft/mc-mods/necromancy",
+    "updateUrl": "",
+    "authorList": ["sirolf2009", "AtomicStryker"],
+    "credits": "Original mod by sirolf2009, ported to 1.7.10 by AtomicStryker, ported to 1.12.2",
+    "logoFile": "assets/necromancy/textures/logo.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
