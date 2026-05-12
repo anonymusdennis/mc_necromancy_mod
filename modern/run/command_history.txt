@@ -4,3 +4,4 @@
 /gamerule doDaylightCycle false
 /kill @e[type=necromancy:bodypart_preview]
 /fill ~ ~ ~ ~20 ~4 ~20 glass
+/kill @e[type=necromancy:bodypart_preview]

@@ -8,7 +8,8 @@
   "minecraft:adventure/adventuring_time": {
     "criteria": {
       "minecraft:cold_ocean": "2026-05-08 20:05:22 +0200",
-      "minecraft:beach": "2026-05-08 18:39:12 +0200"
+      "minecraft:beach": "2026-05-08 18:39:12 +0200",
+      "minecraft:forest": "2026-05-12 16:22:36 +0200"
     },
     "done": false
   },
