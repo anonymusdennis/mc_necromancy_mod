@@ -57,7 +57,7 @@
   "gui.necromancy.bodypart_dev.tab_sockets": "Sockets",
   "gui.necromancy.bodypart_dev.tab_preview": "Preview",
   "gui.necromancy.bodypart_dev.hitbox_section": "Hitbox: ox oy oz  ·  size sx sy sz",
-  "gui.necromancy.bodypart_dev.visual_offset_section": "Mesh offset: dx dy dz",
+  "gui.necromancy.bodypart_dev.visual_offset_section": "Mesh offset: dx dy dz  ·  rotation: yaw pitch roll",
   "gui.necromancy.bodypart_dev.validated_yes": "Validated on disk: yes (Apply + Save updates file)",
   "gui.necromancy.bodypart_dev.validated_no": "Validated on disk: no — Save to disk when ready",
   "gui.necromancy.bodypart_dev.flags_help": "Which minion slot accepts this bodypart item.",
