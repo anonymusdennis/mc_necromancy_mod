@@ -28,6 +28,7 @@ public class EntityBodypartPreview extends Mob {
         setInvulnerable(true);
         setNoGravity(true);
         noPhysics = true;
+        setPersistenceRequired();
     }
 
     @Override
