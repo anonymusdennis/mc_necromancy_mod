@@ -43,6 +43,14 @@ public final class NecromancyNetwork {
             com.sirolf2009.necromancy.network.payload.DevKnobScrollPayload.TYPE,
             com.sirolf2009.necromancy.network.payload.DevKnobScrollPayload.STREAM_CODEC,
             com.sirolf2009.necromancy.network.payload.DevKnobScrollPayload::handle);
+        registrar.playToServer(
+            com.sirolf2009.necromancy.network.payload.BodypartDevLoadPayload.TYPE,
+            com.sirolf2009.necromancy.network.payload.BodypartDevLoadPayload.STREAM_CODEC,
+            com.sirolf2009.necromancy.network.payload.BodypartDevLoadPayload::handle);
+        registrar.playToClient(
+            com.sirolf2009.necromancy.network.payload.BodypartDevLoadResponsePayload.TYPE,
+            com.sirolf2009.necromancy.network.payload.BodypartDevLoadResponsePayload.STREAM_CODEC,
+            com.sirolf2009.necromancy.network.payload.BodypartDevLoadResponsePayload::handle);
         registrar.playToClient(
             com.sirolf2009.necromancy.multipart.network.payload.MultipartTopologyNotifyPayload.TYPE,
             com.sirolf2009.necromancy.multipart.network.payload.MultipartTopologyNotifyPayload.STREAM_CODEC,

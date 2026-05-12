@@ -42,7 +42,7 @@ public class BlockOperationTable extends BaseEntityBlock {
         if (level.isClientSide) return InteractionResult.SUCCESS;
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof MenuProvider menu) {
-            player.openMenu(menu);
+            player.openMenu(menu, buf -> buf.writeBlockPos(pos));
             return InteractionResult.CONSUME;
         }
         return InteractionResult.PASS;

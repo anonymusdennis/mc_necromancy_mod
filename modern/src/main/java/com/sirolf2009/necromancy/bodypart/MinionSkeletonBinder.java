@@ -47,7 +47,7 @@ public final class MinionSkeletonBinder {
             BodypartDefinition rootDef = BodyPartConfigManager.INSTANCE.get(rootId).orElse(null);
             if (rootDef == null) return;
 
-            BodyPartNode rootNode = createNode(rootId, rootDef);
+            BodyPartNode rootNode = createNode(rootId, rootDef, rootLoc);
             hierarchy.registerRoot(rootNode);
             rootNode.simulationLocalTransform().setTranslation(slotOffset(rootLoc));
 
@@ -55,7 +55,7 @@ public final class MinionSkeletonBinder {
                 if (e.getKey() == rootLoc) continue;
                 BodypartDefinition def = BodyPartConfigManager.INSTANCE.get(e.getValue()).orElse(null);
                 if (def == null) continue;
-                BodyPartNode child = createNode(e.getValue(), def);
+                BodyPartNode child = createNode(e.getValue(), def, e.getKey());
                 Vec3 delta = slotOffset(e.getKey()).subtract(slotOffset(rootLoc));
 
                 // Sort attachments by priority so the highest-priority socket is primary.
@@ -117,8 +117,22 @@ public final class MinionSkeletonBinder {
         };
     }
 
-    private static BodyPartNode createNode(ResourceLocation partId, BodypartDefinition def) {
-        OrientedLocalVolume vol = OrientedLocalVolume.fromAxisAlignedBox(def.localHitbox());
+    private static BodyPartNode createNode(ResourceLocation partId, BodypartDefinition def, BodyPartLocation loc) {
+        // The hitbox stored in BodypartDefinition.localHitbox() is in entity-feet-relative
+        // coordinates (i.e. referenced from entity origin = feet level), because that is how
+        // the bodypart-dev preview tool displays and allows the author to configure them.
+        //
+        // A node's world position inside the TransformHierarchy is:
+        //   nodeWorld = entity + slotOffset(loc)
+        //
+        // The OrientedLocalVolume is then positioned relative to the node origin, so to keep
+        // the damage hitbox at the author's intended entity-feet-relative position we must
+        // subtract the node's slot offset from the AABB before wrapping it:
+        //   localHitbox_nodeRelative = localHitbox_entityRelative.move(-slotOffset)
+        Vec3 slotOff = slotOffset(loc);
+        net.minecraft.world.phys.AABB raw = def.localHitbox();
+        net.minecraft.world.phys.AABB nodeLocal = raw.move(-slotOff.x, -slotOff.y, -slotOff.z);
+        OrientedLocalVolume vol = OrientedLocalVolume.fromAxisAlignedBox(nodeLocal);
         HitboxComponent hb = new HitboxComponent.FixedOrientedHitbox(vol, true);
         return new BodyPartNode(partId, hb);
     }

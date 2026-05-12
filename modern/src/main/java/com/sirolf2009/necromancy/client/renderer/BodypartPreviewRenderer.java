@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.sirolf2009.necromancy.api.NecroEntityBase;
 import com.sirolf2009.necromancy.api.NecroEntityRegistry;
+import com.sirolf2009.necromancy.api.BodyPartLocation;
 import com.sirolf2009.necromancy.bodypart.BodypartAttachmentJson;
 import com.sirolf2009.necromancy.bodypart.BodypartDevLiveDraft;
 import com.sirolf2009.necromancy.bodypart.BodypartDefinition;
@@ -103,7 +104,11 @@ public class BodypartPreviewRenderer extends EntityRenderer<EntityBodypartPrevie
                         poseStack.pushPose();
                         poseStack.translate(-cam.x, -cam.y, -cam.z);
                         poseStack.translate((float) x, (float) y, (float) z);
-                        poseStack.translate(0F, 1.5F, 0F);
+                        // Use the same per-slot Y offset as MinionHierarchyRenderer so that the
+                        // preview shows the model at the same height as in the actual game.
+                        // Previously this was hardcoded to +1.5, which mismatched the game rendering
+                        // and made hitbox configuration relative to the wrong origin.
+                        poseStack.translate(0F, slotOffsetY(bp.getLocation()), 0F);
                         poseStack.scale(-BASE_MODEL_FLIP, -BASE_MODEL_FLIP, BASE_MODEL_FLIP);
                         poseStack.mulPose(Axis.YP.rotationDegrees(180F - yaw));
                         MinionAssembler.renderSinglePartAtRest(entity, adapter, bp.getLocation(),
@@ -198,5 +203,19 @@ public class BodypartPreviewRenderer extends EntityRenderer<EntityBodypartPrevie
         int al = FastColor.ARGB32.alpha(argb);
         consumer.addVertex(pose, (float) a[0], (float) a[1], (float) a[2]).setColor(r, g, bl, al).setNormal(pose, nx, ny, nz);
         consumer.addVertex(pose, (float) b[0], (float) b[1], (float) b[2]).setColor(r, g, bl, al).setNormal(pose, nx, ny, nz);
+    }
+
+    /**
+     * Returns the Y offset used to position the model mesh above entity feet for a given slot.
+     * Must match the slot offsets in {@code MinionHierarchyRenderer.slotOffset()}.
+     */
+    public static float slotOffsetY(BodyPartLocation loc) {
+        return switch (loc) {
+            case Head     -> 1.45f;
+            case Torso    -> 0.92f;
+            case Legs     -> 0.42f;
+            case ArmLeft  -> 1.05f;
+            case ArmRight -> 1.05f;
+        };
     }
 }

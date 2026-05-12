@@ -112,9 +112,6 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     private static final ResourceLocation SPEED_MOD_ID =
         ResourceLocation.fromNamespaceAndPath("necromancy", "assembly_speed");
 
-    /** Minimum extent on any axis for a union broadphase AABB to be considered valid for bounding box override. */
-    private static final double MIN_BBOX_SIZE = 1e-6;
-
     /** Cached assembly snapshot.  Recomputed when the body-part data changes. */
     private MinionAssembly assembly = MinionAssembly.empty();
 
@@ -133,11 +130,9 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     private int legsTouchingGroundProbe;
 
     /**
-     * Entity position captured immediately before each {@link #multipartTick()} call.
-     * Used by {@link #makeBoundingBox()} to translate the hierarchy's stale world-space union
-     * bounds to the current entity position, preventing the minion from clipping through the
-     * ground when Minecraft's physics moves the entity during {@code super.tick()}.
-     * Null until the first hierarchy tick has run (falls back to vanilla bounds until then).
+     * Entity position captured immediately before each multipart tick.
+     * Used to translate compositeCollisionBoxes and the hierarchy's world-space OBBs
+     * by the post-physics displacement so damage detection stays aligned.
      */
     private Vec3 lastHierarchyTickPivot = null;
 
@@ -449,8 +444,7 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
             Vec3 delta = posNow.subtract(pivotBeforePhysics);
             if (delta.x != 0 || delta.y != 0 || delta.z != 0) {
                 multipartHierarchy.translateWorldPositions(delta);
-                // makeBoundingBox() translates union bounds by (currentPos - lastHierarchyTickPivot).
-                // Now that union bounds are already at posNow, update the pivot to prevent a double-shift.
+                // Update pivot to the post-physics position so the next tick's delta starts from here.
                 lastHierarchyTickPivot = posNow;
                 // Re-publish broadphase so the spatial hash reflects the post-physics slot positions.
                 MultipartBroadphaseHooks.afterMultipartTick(this);
@@ -668,22 +662,10 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
 
     @Override
     public net.minecraft.world.phys.AABB makeBoundingBox() {
-        // multipartHierarchy field initializer runs after the super-constructor chain, so it can
-        // be null when Entity.<init> calls setPos() → makeBoundingBox() during construction.
-        if (multipartHierarchy != null && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()
-                && lastHierarchyTickPivot != null) {
-            net.minecraft.world.phys.AABB union = multipartHierarchy.unionBroadphaseBounds();
-            if (union.getXsize() > MIN_BBOX_SIZE && union.getYsize() > MIN_BBOX_SIZE && union.getZsize() > MIN_BBOX_SIZE) {
-                // The stored world poses were computed when the entity was at lastHierarchyTickPivot.
-                // Translate the union bounds to the current entity position so that Minecraft's
-                // collision and ground-detection always use an up-to-date bounding box, even when
-                // setPos() is called multiple times during super.tick() before the next hierarchy tick.
-                double dx = getX() - lastHierarchyTickPivot.x;
-                double dy = getY() - lastHierarchyTickPivot.y;
-                double dz = getZ() - lastHierarchyTickPivot.z;
-                return union.move(dx, dy, dz);
-            }
-        }
+        // The multipart OBBs are used for per-part damage detection, not for physics.
+        // Using the OBB union as the physics bounding box causes the entity to sink into the
+        // ground when hitbox centers are above entity-feet level (which is the configured norm).
+        // Vanilla bounds guarantee correct ground-detection and collision regardless of hitbox config.
         return super.makeBoundingBox();
     }
 
