@@ -13,6 +13,7 @@ import com.sirolf2009.necromancy.entity.ai.SwimRandomGoal;
 import com.sirolf2009.necromancy.item.NecromancyItems;
 import com.sirolf2009.necromancy.multipart.RootMobEntity;
 import com.sirolf2009.necromancy.multipart.TransformHierarchy;
+import com.sirolf2009.necromancy.multipart.broadphase.MultipartBroadphaseHooks;
 import com.sirolf2009.necromancy.multipart.damage.DamagePipeline;
 import com.sirolf2009.necromancy.multipart.damage.MultipartDamageRouter;
 import com.sirolf2009.necromancy.multipart.damage.MultipartHealthAggregate;
@@ -437,6 +438,22 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
                     translated.add(box.move(dx, dy, dz));
                 }
                 compositeCollisionBoxes = List.copyOf(translated);
+            }
+        }
+
+        // Also translate hierarchy node world poses, OBBs, and broadphase AABBs so that
+        // MultipartDamageRouter.findPartAlongSegment() and other simulationCollisionObb consumers
+        // see the final post-physics entity position for the rest of this tick.
+        if (!level().isClientSide && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+            Vec3 posNow = position();
+            Vec3 delta = posNow.subtract(pivotBeforePhysics);
+            if (delta.x != 0 || delta.y != 0 || delta.z != 0) {
+                multipartHierarchy.translateWorldPositions(delta);
+                // makeBoundingBox() translates union bounds by (currentPos - lastHierarchyTickPivot).
+                // Now that union bounds are already at posNow, update the pivot to prevent a double-shift.
+                lastHierarchyTickPivot = posNow;
+                // Re-publish broadphase so the spatial hash reflects the post-physics slot positions.
+                MultipartBroadphaseHooks.afterMultipartTick(this);
             }
         }
 

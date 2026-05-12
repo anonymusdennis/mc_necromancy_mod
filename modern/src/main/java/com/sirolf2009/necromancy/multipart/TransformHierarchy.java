@@ -534,6 +534,28 @@ public final class TransformHierarchy {
         return acc == null ? new AABB(0, 0, 0, 0, 0, 0) : acc;
     }
 
+    /**
+     * Cheaply shifts all cached world-space data (simulation/render poses, OBB centers, broadphase AABBs)
+     * for every node by {@code delta}, without full transform re-propagation.
+     *
+     * <p>Use this after the root entity's position is changed by physics (gravity, push-outs) between
+     * hierarchy ticks so that consumers such as
+     * {@link com.sirolf2009.necromancy.multipart.damage.MultipartDamageRouter#findPartAlongSegment} and
+     * the broad-phase spatial index see the correct post-physics collision data.
+     *
+     * <p>Also updates the stored {@link #lastPivot} so the next tick's change-detection is accurate and
+     * does not treat the physics displacement as an additional entity movement.
+     */
+    public void translateWorldPositions(Vec3 delta) {
+        if (delta.x == 0 && delta.y == 0 && delta.z == 0) return;
+        for (BodyPartNode n : nodes.values()) {
+            n.translateCachedWorldData(delta);
+        }
+        if (lastPivot != null) {
+            lastPivot = lastPivot.add(delta);
+        }
+    }
+
     /** Validates that dirty propagation matches a full recompute (development assertions). */
     public void debugValidateAgainstFullTraversal(Vec3 pivot, Quaternionf rootSimulationOrientation, PartTransform rootRenderOverlay) {
         // Snapshot poses from dirty path already computed — optional second pass could compare; omitted for bandwidth.
