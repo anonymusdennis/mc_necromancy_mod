@@ -6,10 +6,15 @@ import com.sirolf2009.necromancy.bodypart.BodypartDefinitionIo;
 import com.sirolf2009.necromancy.bodypart.BodypartDefinitionJson;
 import com.sirolf2009.necromancy.bodypart.BodypartPreviewMask;
 import com.sirolf2009.necromancy.bodypart.BodypartVisualOffsetJson;
+import com.sirolf2009.necromancy.client.BodypartSmahpas;
 import com.sirolf2009.necromancy.gui.BodypartDevLayout;
 import com.sirolf2009.necromancy.inventory.ContainerBodypartDev;
+import com.sirolf2009.necromancy.item.ItemBodyPart;
 import com.sirolf2009.necromancy.network.payload.BodypartDevApplyPayload;
+import com.sirolf2009.necromancy.network.payload.BodypartDevLoadPayload;
 import com.sirolf2009.necromancy.network.payload.BodypartDevSavePayload;
+import com.sirolf2009.necromancy.api.NecroEntityBase;
+import com.sirolf2009.necromancy.api.NecroEntityRegistry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -19,6 +24,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.nio.charset.StandardCharsets;
@@ -149,6 +155,12 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         int ay = pvRow + pvGap * 4 + 14;
         addRenderableWidget(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.save_disk"), b -> sendSave())
             .bounds(lx, ay, 132, 22).build());
+        // SMAHPAS: auto-suggest hitbox from actual mesh bounds
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.smahpas"), b -> runSmahpas())
+            .bounds(lx + 138, ay, 132, 22).build());
+        // Load from disk: restore the last saved config
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.load_disk"), b -> sendLoadFromDisk())
+            .bounds(lx, ay + 26, 132, 22).build());
 
         // Dev knob give-buttons — three rows of three (geometry knobs) + scale + 9 socket knobs
         int kbY = ay + 28;
@@ -446,6 +458,44 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         PacketDistributor.sendToServer(new BodypartDevApplyPayload(pos,
             json.getBytes(StandardCharsets.UTF_8), pm));
         PacketDistributor.sendToServer(new BodypartDevSavePayload(pos));
+    }
+
+    private void runSmahpas() {
+        ItemStack partStack = menu.getSlot(0).getItem();
+        if (!(partStack.getItem() instanceof ItemBodyPart bp)) return;
+        NecroEntityBase adapter = NecroEntityRegistry.get(bp.getMobName());
+        if (adapter == null) return;
+        widgetsToDraft();
+        boolean ok = BodypartSmahpas.suggest(adapter, bp.getLocation(), draft);
+        if (!ok) return;
+        pushDraftToWidgets();
+        sendApply();
+    }
+
+    private void sendLoadFromDisk() {
+        PacketDistributor.sendToServer(new BodypartDevLoadPayload(menu.getDevBlockPos()));
+    }
+
+    /** Called by the network handler when the server responds with the reloaded disk JSON. */
+    public void receiveLoadFromDisk(String json) {
+        try {
+            draft = BodypartDefinitionIo.fromJson(json);
+            if (draft.attachments == null) draft.attachments = new ArrayList<>();
+            if (draft.attachments.isEmpty()) draft.attachments.add(new BodypartAttachmentJson());
+            if (draft.flags == null) draft.flags = new com.sirolf2009.necromancy.bodypart.BodypartFlagsJson();
+            if (draft.hitbox == null) draft.hitbox = new com.sirolf2009.necromancy.bodypart.BodypartHitboxJson();
+            if (draft.visualOffset == null) draft.visualOffset = new BodypartVisualOffsetJson();
+            attachmentIndex = Math.min(attachmentIndex, draft.attachments.size() - 1);
+            if (attachmentIndex < 0) attachmentIndex = 0;
+        } catch (Exception e) {
+            return;
+        }
+        pushDraftToWidgets();
+        sendApply();
+    }
+
+    public ContainerBodypartDev getMenu() {
+        return menu;
     }
 
     private void giveKnob(int mode, int socketIndex) {

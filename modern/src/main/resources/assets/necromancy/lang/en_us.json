@@ -51,6 +51,8 @@
   "container.necromancy.sewing_machine": "Sewing Machine",
   "container.necromancy.bodypart_dev": "Bodypart developer console",
   "gui.necromancy.bodypart_dev.save_disk": "Save to disk",
+  "gui.necromancy.bodypart_dev.load_disk": "Load from disk",
+  "gui.necromancy.bodypart_dev.smahpas": "SMAHPAS (suggest hitbox)",
   "gui.necromancy.bodypart_dev.tab_geometry": "Geometry",
   "gui.necromancy.bodypart_dev.tab_flags": "Slots",
   "gui.necromancy.bodypart_dev.tab_sockets": "Sockets",
