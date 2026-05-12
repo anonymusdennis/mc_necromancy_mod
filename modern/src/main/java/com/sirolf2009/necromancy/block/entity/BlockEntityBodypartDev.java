@@ -117,6 +117,15 @@ public class BlockEntityBodypartDev extends BlockEntity implements Container, Me
         }
     }
 
+    @Override
+    public void setRemoved() {
+        // Discard the preview entity when the block entity is removed (e.g. block broken).
+        if (level != null && !level.isClientSide) {
+            removePreview(level);
+        }
+        super.setRemoved();
+    }
+
     public String getDraftJson() {
         return new String(draftUtf8, StandardCharsets.UTF_8);
     }

@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 public class BodypartPreviewRenderer extends EntityRenderer<EntityBodypartPreview> {
 
-    private static final float BASE_MODEL_FLIP = 0.55F;
+    private static final float BASE_MODEL_FLIP = 1.0F;
     /** Half-extent of socket marker crosses (blocks); pivot markers use {@link #PIVOT_CROSS_HALF}. */
     private static final double SOCKET_CROSS_HALF = 0.035;
     private static final double PIVOT_CROSS_HALF = 0.024;
@@ -61,9 +61,12 @@ public class BodypartPreviewRenderer extends EntityRenderer<EntityBodypartPrevie
         boolean showPivotMarkers = (mask & BodypartPreviewMask.PIVOT_MARKERS) != 0;
 
         Vec3 cam = entityRenderDispatcher.camera.getPosition();
-        double x = entity.getX(partialTicks);
-        double y = entity.getY(partialTicks);
-        double z = entity.getZ(partialTicks);
+        // Use getPosition(partialTick) for correct lerp between xo/yo/zo and current pos.
+        // entity.getX/Y/Z(double) would return a point along the AABB, not the interpolated pos.
+        Vec3 entityPos = entity.getPosition(partialTicks);
+        double x = entityPos.x;
+        double y = entityPos.y;
+        double z = entityPos.z;
         float yaw = entity.getYRot();
 
         Minecraft mc = Minecraft.getInstance();
