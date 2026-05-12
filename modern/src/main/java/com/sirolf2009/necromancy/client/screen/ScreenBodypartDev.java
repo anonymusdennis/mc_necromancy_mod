@@ -147,10 +147,32 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         addPv(chkPvMesh); addPv(chkPvCollision); addPv(chkPvSockets); addPv(chkPvPivots);
 
         int ay = pvRow + pvGap * 4 + 14;
-        addRenderableWidget(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.apply"), b -> sendApply())
-            .bounds(lx, ay, 118, 22).build());
         addRenderableWidget(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.save_disk"), b -> sendSave())
-            .bounds(lx + 126, ay, 132, 22).build());
+            .bounds(lx, ay, 132, 22).build());
+
+        // Dev knob give-buttons — two rows of three
+        int kbY = ay + 28;
+        int kbW = 84;
+        int kbGap = 6;
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_hbpos"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_HITBOX_POS))
+            .bounds(lx, kbY, kbW, 18).build());
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_hbsize"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_HITBOX_SIZE))
+            .bounds(lx + kbW + kbGap, kbY, kbW, 18).build());
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_visoff"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_VISUAL_OFFSET))
+            .bounds(lx + (kbW + kbGap) * 2, kbY, kbW, 18).build());
+        kbY += 22;
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_visrot"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_VISUAL_ROT))
+            .bounds(lx, kbY, kbW, 18).build());
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_attpos"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_ATTACH_POS))
+            .bounds(lx + kbW + kbGap, kbY, kbW, 18).build());
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_attrot"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_ATTACH_ROT))
+            .bounds(lx + (kbW + kbGap) * 2, kbY, kbW, 18).build());
 
         pushDraftToWidgets();
         applyTabVisibility();
@@ -208,6 +230,7 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
 
     @Override
     public void removed() {
+        sendApply();
         BodypartDevLiveDraft.clear();
         super.removed();
     }
@@ -401,6 +424,11 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         PacketDistributor.sendToServer(new BodypartDevApplyPayload(pos,
             json.getBytes(StandardCharsets.UTF_8), pm));
         PacketDistributor.sendToServer(new BodypartDevSavePayload(pos));
+    }
+
+    private void giveKnob(int mode) {
+        PacketDistributor.sendToServer(
+            new com.sirolf2009.necromancy.network.payload.DevKnobGivePayload(menu.getDevBlockPos(), mode));
     }
 
     @Override
