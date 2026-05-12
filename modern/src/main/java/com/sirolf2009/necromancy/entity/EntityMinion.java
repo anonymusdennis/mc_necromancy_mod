@@ -131,6 +131,15 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     /** Number of LEG-flag bodypart nodes currently touching the ground (0 = airborne). */
     private int legsTouchingGroundProbe;
 
+    /**
+     * Entity position captured immediately before each {@link #multipartTick()} call.
+     * Used by {@link #makeBoundingBox()} to translate the hierarchy's stale world-space union
+     * bounds to the current entity position, preventing the minion from clipping through the
+     * ground when Minecraft's physics moves the entity during {@code super.tick()}.
+     * Null until the first hierarchy tick has run (falls back to vanilla bounds until then).
+     */
+    private Vec3 lastHierarchyTickPivot = null;
+
     private final TransformHierarchy multipartHierarchy = new TransformHierarchy();
 
     public EntityMinion(EntityType<? extends EntityMinion> type, Level level) {
@@ -392,23 +401,27 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
 
     @Override
     public void tick() {
-        super.tick();
-        // Re-resolve on both sides: client uses it for rendering / step sounds,
-        // server uses it for AI and feature ticking.
+        // Refresh assembly and tick the multipart hierarchy BEFORE super.tick() so that:
+        //  1. makeBoundingBox() returns bounds based on start-of-tick positions rather than
+        //     last tick's positions, preventing the entity from clipping through the ground.
+        //  2. legsHierarchyTouchGround() called inside aiStep() (which runs in super.tick())
+        //     reads fresh broadphase AABBs, eliminating the 1-4 frame ground-detection lag.
         refreshAssembly();
-        if (!level().isClientSide) {
-            if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
-                multipartTick();
+        if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+            lastHierarchyTickPivot = position();
+            multipartTick();
+            if (!level().isClientSide) {
                 compositeCollisionBoxes = multipartHierarchy.collectCollisionBoxes();
-            } else {
-                compositeCollisionBoxes = MinionCompositeCollision.buildWorldBoxes(this);
             }
+        } else if (!level().isClientSide) {
+            compositeCollisionBoxes = MinionCompositeCollision.buildWorldBoxes(this);
+        }
+
+        super.tick();
+
+        if (!level().isClientSide) {
             for (Map.Entry<BodyPartLocation, List<PartFeature>> e : features.entrySet()) {
                 for (PartFeature f : e.getValue()) f.serverTick(this, e.getKey());
-            }
-        } else {
-            if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
-                multipartTick();
             }
         }
     }
@@ -619,10 +632,18 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     public net.minecraft.world.phys.AABB makeBoundingBox() {
         // multipartHierarchy field initializer runs after the super-constructor chain, so it can
         // be null when Entity.<init> calls setPos() → makeBoundingBox() during construction.
-        if (multipartHierarchy != null && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+        if (multipartHierarchy != null && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()
+                && lastHierarchyTickPivot != null) {
             net.minecraft.world.phys.AABB union = multipartHierarchy.unionBroadphaseBounds();
             if (union.getXsize() > MIN_BBOX_SIZE && union.getYsize() > MIN_BBOX_SIZE && union.getZsize() > MIN_BBOX_SIZE) {
-                return union;
+                // The stored world poses were computed when the entity was at lastHierarchyTickPivot.
+                // Translate the union bounds to the current entity position so that Minecraft's
+                // collision and ground-detection always use an up-to-date bounding box, even when
+                // setPos() is called multiple times during super.tick() before the next hierarchy tick.
+                double dx = getX() - lastHierarchyTickPivot.x;
+                double dy = getY() - lastHierarchyTickPivot.y;
+                double dz = getZ() - lastHierarchyTickPivot.z;
+                return union.move(dx, dy, dz);
             }
         }
         return super.makeBoundingBox();
