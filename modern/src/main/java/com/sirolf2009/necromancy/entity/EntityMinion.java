@@ -111,6 +111,9 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     private static final ResourceLocation SPEED_MOD_ID =
         ResourceLocation.fromNamespaceAndPath("necromancy", "assembly_speed");
 
+    /** Minimum extent on any axis for a union broadphase AABB to be considered valid for bounding box override. */
+    private static final double MIN_BBOX_SIZE = 1e-6;
+
     /** Cached assembly snapshot.  Recomputed when the body-part data changes. */
     private MinionAssembly assembly = MinionAssembly.empty();
 
@@ -125,7 +128,8 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
 
     /** Server-only bodypart hitboxes (five-slot altar layout). */
     private List<AABB> compositeCollisionBoxes = List.of();
-    private boolean legsTouchingGroundProbe;
+    /** Number of LEG-flag bodypart nodes currently touching the ground (0 = airborne). */
+    private int legsTouchingGroundProbe;
 
     private final TransformHierarchy multipartHierarchy = new TransformHierarchy();
 
@@ -223,8 +227,13 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
         return compositeCollisionBoxes;
     }
 
-    /** True when configured LEG-flag bodypart touches blocks beneath its probe volume (server). */
+    /** True when at least one configured LEG-flag bodypart touches blocks beneath its probe volume (server). */
     public boolean necromancyLegsConfiguredTouchGround() {
+        return legsTouchingGroundProbe > 0;
+    }
+
+    /** Number of grounded leg-flagged nodes (server); 0 = fully airborne. */
+    public int necromancyLegsGroundedCount() {
         return legsTouchingGroundProbe;
     }
 
@@ -593,6 +602,28 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     /** When true, use altar-era composite AABBs instead of {@link #multipartHierarchy} collision. */
     public boolean useLegacyCollision() {
         return NecromancyConfig.MINION_LEGACY_COMPOSITE_COLLISION.get();
+    }
+
+    @Override
+    public void multipartCollectAnimationLayers(com.sirolf2009.necromancy.multipart.animation.MultipartAnimationFrame frame) {
+        float walkPos   = walkAnimation.position(1.0f);
+        float walkSpeed = walkAnimation.speed(1.0f);
+        float headYaw   = yHeadRot - yBodyRot;
+        float headPitch = getXRot();
+        float attackAnim = getAttackAnim(1.0f);
+        com.sirolf2009.necromancy.bodypart.MinionBodypartAnimator.collect(
+            this, frame, walkPos, walkSpeed, headYaw, headPitch, attackAnim);
+    }
+
+    @Override
+    public net.minecraft.world.phys.AABB makeBoundingBox() {
+        if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+            net.minecraft.world.phys.AABB union = multipartHierarchy.unionBroadphaseBounds();
+            if (union.getXsize() > MIN_BBOX_SIZE && union.getYsize() > MIN_BBOX_SIZE && union.getZsize() > MIN_BBOX_SIZE) {
+                return union;
+            }
+        }
+        return super.makeBoundingBox();
     }
 
     private void initMultipartPartHealthFromVanilla() {

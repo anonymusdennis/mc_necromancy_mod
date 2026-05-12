@@ -75,7 +75,7 @@ public final class NecromancyConfig {
             .comment(
                 "Route incoming damage through per-part hitboxes with independent HP pools (experimental).",
                 "Requires multipart collision (minionLegacyCompositeCollision=false).")
-            .define("minionMultipartPerPartHealth", false);
+            .define("minionMultipartPerPartHealth", true);
         b.pop();
 
         b.push("multipart");

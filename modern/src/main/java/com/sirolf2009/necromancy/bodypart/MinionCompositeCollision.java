@@ -91,18 +91,19 @@ public final class MinionCompositeCollision {
         return local.move(root.x + offset.x, root.y + offset.y, root.z + offset.z);
     }
 
-    /** LEG-flag bodypart nodes from multipart hierarchy — samples broad-phase boxes lowered toward blocks. */
-    public static boolean legsHierarchyTouchGround(EntityMinion minion, TransformHierarchy hierarchy) {
+    /** LEG-flag bodypart nodes from multipart hierarchy — counts how many are grounded. Returns 0 if airborne or client-side. */
+    public static int legsHierarchyTouchGround(EntityMinion minion, TransformHierarchy hierarchy) {
         Level level = minion.level();
-        if (level.isClientSide) return false;
+        if (level.isClientSide) return 0;
+        int count = 0;
         for (BodyPartNode n : hierarchy.nodes()) {
             BodypartDefinition def = BodyPartConfigManager.INSTANCE.get(n.id()).orElse(null);
             if (def == null || def.flags() == null || !def.flags().leg) continue;
             AABB box = n.simulationBroadphase();
             if (box.getXsize() <= 1e-6 || box.getYsize() <= 1e-6 || box.getZsize() <= 1e-6) continue;
-            if (intersectsBlockCollision(level, box.move(0, -0.07, 0).inflate(-0.02, 0, -0.02))) return true;
+            if (intersectsBlockCollision(level, box.move(0, -0.07, 0).inflate(-0.02, 0, -0.02))) count++;
         }
-        return false;
+        return count;
     }
 
     /** Segment–AABB hit (coarse sampling along the ray). */
@@ -122,23 +123,23 @@ public final class MinionCompositeCollision {
         return false;
     }
 
-    /** LEG-flag bodypart box lowered slightly intersects block collision. */
-    public static boolean legsConfiguredTouchGround(EntityMinion minion) {
+    /** LEG-flag bodypart box lowered slightly intersects block collision. Returns 1 if grounded, 0 otherwise. */
+    public static int legsConfiguredTouchGround(EntityMinion minion) {
         Level level = minion.level();
-        if (level.isClientSide) return false;
+        if (level.isClientSide) return 0;
         String mobName = minion.getBodyPartName(BodyPartLocation.Legs);
-        if (mobName.isEmpty()) return false;
+        if (mobName.isEmpty()) return 0;
         ResourceLocation id = BodyPartItemIds.inferredPartId(mobName, BodyPartLocation.Legs);
         BodypartDefinition def = BodyPartConfigManager.INSTANCE.get(id).orElse(null);
-        if (def == null || def.flags() == null || !def.flags().leg) return false;
+        if (def == null || def.flags() == null || !def.flags().leg) return 0;
 
         float yawRad = (float) Math.toRadians(-minion.getYRot());
         float cos = (float) Math.cos(yawRad);
         float sin = (float) Math.sin(yawRad);
         Vec3 root = minion.position();
         AABB box = boxForSlot(minion, BodyPartLocation.Legs, root, cos, sin);
-        if (box == null) return false;
-        return intersectsBlockCollision(level, box.move(0, -0.07, 0).inflate(-0.02, 0, -0.02));
+        if (box == null) return 0;
+        return intersectsBlockCollision(level, box.move(0, -0.07, 0).inflate(-0.02, 0, -0.02)) ? 1 : 0;
     }
 
     private static boolean intersectsBlockCollision(Level level, AABB box) {
