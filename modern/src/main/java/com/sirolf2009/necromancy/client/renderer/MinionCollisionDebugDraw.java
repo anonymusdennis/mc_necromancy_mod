@@ -3,12 +3,19 @@ package com.sirolf2009.necromancy.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sirolf2009.necromancy.api.BodyPartLocation;
+import com.sirolf2009.necromancy.bodypart.BodyPartConfigManager;
+import com.sirolf2009.necromancy.bodypart.BodypartFlagsJson;
 import com.sirolf2009.necromancy.bodypart.MinionCompositeCollision;
+import com.sirolf2009.necromancy.multipart.TransformHierarchy;
+import com.sirolf2009.necromancy.multipart.collision.ResolvedObb;
+import com.sirolf2009.necromancy.multipart.part.BodyPartNode;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -38,6 +45,92 @@ public final class MinionCollisionDebugDraw {
             case ArmRight -> FastColor.ARGB32.color(255, 255, 90, 255);
             case Legs -> FastColor.ARGB32.color(255, 255, 220, 90);
         };
+    }
+
+    // -------------------------------------------------------------------------
+    // Hierarchy OBB debug draw (new multipart system)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Draw oriented bounding boxes for every collision-enabled node in the hierarchy.
+     * Colors are assigned by bodypart flag: head=red, torso=green, arm=cyan, leg=yellow, special=purple.
+     *
+     * @param poseStack pose stack at entity-relative origin
+     * @param buffers   buffer source
+     * @param camera    absolute camera position (used to go to world-origin render space)
+     * @param hierarchy the entity's transform hierarchy
+     */
+    public static void renderHierarchyOBBs(PoseStack poseStack,
+                                            MultiBufferSource buffers,
+                                            Vec3 camera,
+                                            TransformHierarchy hierarchy) {
+        if (hierarchy.nodes().isEmpty()) return;
+        poseStack.pushPose();
+        poseStack.translate(-camera.x, -camera.y, -camera.z);
+        VertexConsumer lines = buffers.getBuffer(RenderType.lines());
+        PoseStack.Pose pose = poseStack.last();
+        for (BodyPartNode node : hierarchy.nodes()) {
+            if (!node.hitbox().collisionEnabled() || !node.attachedToParent()) continue;
+            ResolvedObb obb = node.simulationCollisionObb();
+            // Skip degenerate (zero-volume) OBBs.
+            Vector3f half = new Vector3f();
+            obb.halfExtentsInto(half);
+            if (half.x < 1e-5f || half.y < 1e-5f || half.z < 1e-5f) continue;
+
+            int color = BodyPartConfigManager.INSTANCE.get(node.id())
+                .map(def -> obbColorForFlags(def.flags()))
+                .orElse(FastColor.ARGB32.color(255, 200, 200, 200));
+
+            drawObb(pose, lines, obb, color);
+        }
+        poseStack.popPose();
+    }
+
+    private static int obbColorForFlags(BodypartFlagsJson flags) {
+        if (flags == null) return FastColor.ARGB32.color(255, 200, 200, 200);
+        if (flags.head)    return FastColor.ARGB32.color(255, 0xFF, 0x5A, 0x5A); // red
+        if (flags.torso)   return FastColor.ARGB32.color(255, 0x5A, 0xFF, 0x5A); // green
+        if (flags.arm)     return FastColor.ARGB32.color(255, 0x5A, 0xDC, 0xFF); // cyan
+        if (flags.leg)     return FastColor.ARGB32.color(255, 0xFF, 0xDC, 0x5A); // yellow
+        if (flags.special) return FastColor.ARGB32.color(255, 0xDC, 0x5A, 0xFF); // purple
+        return FastColor.ARGB32.color(255, 200, 200, 200);
+    }
+
+    private static void drawObb(PoseStack.Pose pose, VertexConsumer lines, ResolvedObb obb, int argb) {
+        Quaternionf q = new Quaternionf();
+        obb.orientationInto(q);
+        Vector3f half = new Vector3f();
+        obb.halfExtentsInto(half);
+        Vec3 c = obb.centerWorld();
+
+        // Compute 8 corners: ±hx, ±hy, ±hz rotated by orientation quaternion, then offset by center.
+        double[][] corners = new double[8][3];
+        int idx = 0;
+        for (float sx : new float[]{-1f, 1f}) {
+            for (float sy : new float[]{-1f, 1f}) {
+                for (float sz : new float[]{-1f, 1f}) {
+                    Vector3f local = new Vector3f(half.x * sx, half.y * sy, half.z * sz);
+                    q.transform(local);
+                    corners[idx][0] = c.x + local.x;
+                    corners[idx][1] = c.y + local.y;
+                    corners[idx][2] = c.z + local.z;
+                    idx++;
+                }
+            }
+        }
+
+        // 12 edges of a box: 4 along each axis pair.
+        int[][] edges = {
+            {0,1},{2,3},{4,5},{6,7},   // Z-axis edges
+            {0,2},{1,3},{4,6},{5,7},   // Y-axis edges
+            {0,4},{1,5},{2,6},{3,7}    // X-axis edges
+        };
+        for (int[] e : edges) {
+            segment(pose, lines,
+                corners[e[0]][0], corners[e[0]][1], corners[e[0]][2],
+                corners[e[1]][0], corners[e[1]][1], corners[e[1]][2],
+                argb);
+        }
     }
 
     private static void outlineBoxWorld(PoseStack.Pose pose, VertexConsumer consumer, AABB box, int argb) {

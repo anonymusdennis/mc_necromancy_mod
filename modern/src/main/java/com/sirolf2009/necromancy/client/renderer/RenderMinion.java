@@ -20,6 +20,15 @@ import net.minecraft.world.phys.Vec3;
  * outer transform (lift, mirror Y, body-yaw rotate) and then delegates the
  * body-part assembly to {@link MinionAssembler}, which is shared with the
  * altar preview renderer.
+ *
+ * <p>When the new multipart system is active ({@code !useLegacyCollision()} and the hierarchy
+ * is non-empty), rendering is delegated to {@link MinionHierarchyRenderer} which reads animation
+ * overlays from the {@link com.sirolf2009.necromancy.multipart.TransformHierarchy} instead of
+ * calling the legacy {@code setAnim} hook.  The legacy {@link MinionAssembler} path is preserved
+ * as an automatic fallback.
+ *
+ * <p>F3+B hitbox drawing also switches: the new path draws per-part OBBs from the hierarchy via
+ * {@link MinionCollisionDebugDraw#renderHierarchyOBBs}; the legacy path uses slot AABBs.
  */
 public class RenderMinion extends EntityRenderer<EntityMinion> {
 
@@ -55,23 +64,39 @@ public class RenderMinion extends EntityRenderer<EntityMinion> {
         float speed     = Mth.clamp(minion.walkAnimation.speed(partialTicks), 0F, 1F);
         float attackAnim = minion.getAttackAnim(partialTicks);
 
-        pose.pushPose();
-        // Standard living-entity outer transform.
-        pose.translate(0F, 1.5F, 0F);
-        pose.scale(-1F, -1F, 1F);
-        pose.mulPose(Axis.YP.rotationDegrees(180F - bodyYaw));
+        boolean useHierarchy = !minion.useLegacyCollision()
+            && !minion.multipartHierarchy().nodes().isEmpty();
 
-        MinionAssembler.renderAssembled(minion, assembly, minion.isSaddled(),
-            attackAnim, walk, speed, age, headYaw, headPitch,
-            pose, buf, light);
+        if (useHierarchy) {
+            // New multipart path: hierarchy-driven animation overlays.
+            MinionHierarchyRenderer.render(minion, minion.multipartHierarchy(), assembly,
+                bodyYaw, partialTicks, pose, buf, light);
+        } else {
+            // Legacy path: standard setAnim pipeline.
+            pose.pushPose();
+            pose.translate(0F, 1.5F, 0F);
+            pose.scale(-1F, -1F, 1F);
+            pose.mulPose(Axis.YP.rotationDegrees(180F - bodyYaw));
 
-        pose.popPose();
+            MinionAssembler.renderAssembled(minion, assembly, minion.isSaddled(),
+                attackAnim, walk, speed, age, headYaw, headPitch,
+                pose, buf, light);
+
+            pose.popPose();
+        }
 
         if (entityRenderDispatcher.shouldRenderHitBoxes()) {
-            var dbg = MinionCompositeCollision.buildWorldBoxesForClientDebug(minion);
-            if (!dbg.isEmpty()) {
-                Vec3 cam = entityRenderDispatcher.camera.getPosition();
-                MinionCollisionDebugDraw.renderMultipartBoxes(pose, buf, cam, dbg);
+            Vec3 cam = entityRenderDispatcher.camera.getPosition();
+            if (useHierarchy) {
+                // New path: draw per-part OBBs from the hierarchy.
+                MinionCollisionDebugDraw.renderHierarchyOBBs(pose, buf, cam,
+                    minion.multipartHierarchy());
+            } else {
+                // Legacy path: draw slot AABBs.
+                var dbg = MinionCompositeCollision.buildWorldBoxesForClientDebug(minion);
+                if (!dbg.isEmpty()) {
+                    MinionCollisionDebugDraw.renderMultipartBoxes(pose, buf, cam, dbg);
+                }
             }
         }
     }

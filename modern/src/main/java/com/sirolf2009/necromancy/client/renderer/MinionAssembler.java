@@ -113,6 +113,56 @@ public final class MinionAssembler {
             /*forceRestPose=*/true, visualSpec, /*isolatePreviewMesh=*/true, pose, buf, light);
     }
 
+    /**
+     * Renders a single bodypart in rest pose with an additional animation rotation applied to the
+     * model root. Used by {@link MinionHierarchyRenderer} to visualise hierarchy-driven procedural
+     * animation without calling the legacy {@code setAnim} path.
+     *
+     * <p>The {@code animDeltaRotation} quaternion represents a bone-local rotation delta (from the
+     * node's composed render overlay) and is decomposed via {@link org.joml.Quaternionf#getEulerAnglesYXZ}
+     * before being added to the model root's {@code xRot/yRot/zRot}.
+     *
+     * @param contextHost      the entity being rendered (may be null for preview)
+     * @param adapter          the body-part adapter that owns the model
+     * @param slot             which altar slot this part occupies
+     * @param animDeltaRotation bone-local rotation overlay from the transform hierarchy
+     * @param pose             pose stack (must already be positioned at the part's slot origin)
+     * @param buf              buffer source
+     * @param light            packed light value
+     */
+    public static void renderSinglePartWithHierarchyOverlay(@Nullable LivingEntity contextHost,
+                                                              NecroEntityBase adapter,
+                                                              BodyPartLocation slot,
+                                                              org.joml.Quaternionf animDeltaRotation,
+                                                              PoseStack pose,
+                                                              MultiBufferSource buf,
+                                                              int light) {
+        if (adapter == null) return;
+        var baked = MinionPartCache.get(adapter, slot, false);
+        if (baked == null) return;
+
+        pose.pushPose();
+        // Apply per-definition visual fine-tune offset (same as renderGroup / applyVisualOffset).
+        ResourceLocation partId = BodyPartItemIds.inferredPartId(adapter.mobName, slot);
+        BodyPartConfigManager.INSTANCE.get(partId).ifPresent(def ->
+            pose.translate((float) def.visDx(), (float) def.visDy(), (float) def.visDz()));
+
+        baked.resetPoses();
+
+        // Decompose the animation delta quaternion to Euler YXZ and add to model root rotations.
+        if (animDeltaRotation != null) {
+            org.joml.Vector3f euler = new org.joml.Vector3f();
+            animDeltaRotation.getEulerAnglesYXZ(euler);
+            baked.root().xRot += euler.x;
+            baked.root().yRot += euler.y;
+            baked.root().zRot += euler.z;
+        }
+
+        draw(baked.root(), adapter.texture, pose, buf, light);
+        pose.popPose();
+    }
+
+
     // ------------------------------------------------------------------ --
     //                              STANDING
     // ------------------------------------------------------------------ --

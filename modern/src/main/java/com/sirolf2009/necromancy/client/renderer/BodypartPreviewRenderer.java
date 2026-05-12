@@ -118,13 +118,13 @@ public class BodypartPreviewRenderer extends EntityRenderer<EntityBodypartPrevie
                                               double ex, double ey, double ez, float yawDeg,
                                               boolean sockets, boolean pivots) {
         if (def.attachments() == null || def.attachments().isEmpty()) return;
-        int argbSocket = FastColor.ARGB32.color(255, 255, 140, 40);
         int argbPivot = FastColor.ARGB32.color(255, 70, 200, 255);
         for (BodypartAttachmentJson at : def.attachments()) {
             if (at == null) continue;
             if (sockets) {
                 Vec3 local = new Vec3(at.ox, at.oy, at.oz);
                 Vec3 off = BodypartPreviewGeom.rotateY(local, yawDeg);
+                int argbSocket = socketNameColor(at.name);
                 drawPointCross(pose, lines, ex + off.x, ey + off.y, ez + off.z, SOCKET_CROSS_HALF, argbSocket);
             }
             if (pivots && at.hasRotationPivot) {
@@ -133,6 +133,19 @@ public class BodypartPreviewRenderer extends EntityRenderer<EntityBodypartPrevie
                 drawPointCross(pose, lines, ex + lp.x, ey + lp.y, ez + lp.z, PIVOT_CROSS_HALF, argbPivot);
             }
         }
+    }
+
+    /** Hash the first 6 chars of the socket name to a distinct pastel RGB color. */
+    private static int socketNameColor(String name) {
+        if (name == null || name.isEmpty()) return FastColor.ARGB32.color(255, 255, 140, 40);
+        int hash = 0;
+        int len = Math.min(name.length(), 6);
+        for (int i = 0; i < len; i++) hash = hash * 31 + name.charAt(i);
+        // Map to a bright pastel color: take 3 x 6-bit channels, boost to [128, 255].
+        int r = 128 + ((hash >>> 12) & 0x7F);
+        int g = 128 + ((hash >>>  6) & 0x7F);
+        int b = 128 + ((hash       ) & 0x7F);
+        return FastColor.ARGB32.color(255, r, g, b);
     }
 
     /** Three orthogonal segments through the point — same line pipeline as hitbox wireframe. */

@@ -14,7 +14,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,17 +57,39 @@ public final class MinionSkeletonBinder {
                 if (def == null) continue;
                 BodyPartNode child = createNode(e.getValue(), def);
                 Vec3 delta = slotOffset(e.getKey()).subtract(slotOffset(rootLoc));
-                ResourceLocation sock = Reference.rl("minion_socket_" + e.getKey().name().toLowerCase());
+
+                // Sort attachments by priority so the highest-priority socket is primary.
+                List<BodypartAttachmentJson> attachments = new ArrayList<>(def.attachments());
+                attachments.sort(Comparator.comparingInt(a -> a.priority));
+
+                // Build the primary socket transform: base delta + attachment fine-tune (ox/oy/oz) + rotation.
                 PartTransform socket = PartTransform.identity();
-                socket.setTranslation(delta);
-                if (!def.attachments().isEmpty()) {
-                    BodypartAttachmentJson aj = def.attachments().get(0);
+                if (!attachments.isEmpty()) {
+                    BodypartAttachmentJson primary = attachments.get(0);
+                    socket.setTranslation(delta.add(primary.ox, primary.oy, primary.oz));
                     Quaternionf q = new Quaternionf();
-                    aj.socketLocalTransform().rotationInto(q);
+                    primary.socketLocalTransform().rotationInto(q);
                     socket.setRotation(q);
+                } else {
+                    socket.setTranslation(delta);
                 }
-                rootNode.addAttachmentPoint(new AttachmentPoint(sock, socket, SocketBindSpace.SIMULATION, child.id(), 0));
+
+                ResourceLocation primarySock = Reference.rl("minion_socket_" + e.getKey().name().toLowerCase());
+                rootNode.addAttachmentPoint(new AttachmentPoint(primarySock, socket, SocketBindSpace.SIMULATION, child.id(), 0));
                 hierarchy.registerChild(child, rootNode.id());
+
+                // Register additional sockets declared on the child as named empty attachment points on the child.
+                // These represent sub-connection points (e.g. torso exposing left_arm_socket, right_arm_socket).
+                if (attachments.size() > 1) {
+                    for (int i = 1; i < attachments.size(); i++) {
+                        BodypartAttachmentJson aj = attachments.get(i);
+                        String sockName = (aj.name != null && !aj.name.isBlank()) ? aj.name : ("socket_" + i);
+                        ResourceLocation sockId = Reference.rl(child.id().getPath() + "/" + sockName);
+                        PartTransform sockTransform = aj.socketLocalTransform();
+                        // childPartId=null: empty socket for future sub-part wiring.
+                        child.addAttachmentPoint(new AttachmentPoint(sockId, sockTransform, SocketBindSpace.SIMULATION, null, aj.priority));
+                    }
+                }
             }
         }
     }
