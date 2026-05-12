@@ -22,6 +22,12 @@ import java.util.ArrayList;
  */
 public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delta) implements CustomPacketPayload {
 
+    /** Maximum squared distance (blocks²) from the block entity to accept the packet. */
+    private static final double MAX_DISTANCE_SQ = 128.0;
+
+    /** Minimum hitbox full-extent to prevent collapsing to zero or negative size. */
+    private static final double MIN_HITBOX_EXTENT = 1e-4;
+
     public static final Type<DevKnobScrollPayload> TYPE = new Type<>(Reference.rl("dev_knob_scroll"));
 
     public static final net.minecraft.network.codec.StreamCodec<RegistryFriendlyByteBuf, DevKnobScrollPayload> STREAM_CODEC =
@@ -53,7 +59,7 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
         ctx.enqueueWork(() -> {
             if (!(ctx.player() instanceof ServerPlayer player)) return;
             if (!player.getAbilities().instabuild && !player.hasPermissions(2)) return;
-            if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(msg.pos)) > 128) return;
+            if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(msg.pos)) > MAX_DISTANCE_SQ) return;
             if (!(player.level().getBlockEntity(msg.pos) instanceof BlockEntityBodypartDev dev)) return;
             try {
                 BodypartDefinitionJson json = BodypartDefinitionIo.fromJson(dev.getDraftJson());
@@ -79,9 +85,9 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
                 break;
 
             case ItemDevKnob.MODE_HITBOX_SIZE:
-                if (axis == 0) json.hitbox.sx = Math.max(1e-4, json.hitbox.sx + delta);
-                else if (axis == 1) json.hitbox.sy = Math.max(1e-4, json.hitbox.sy + delta);
-                else json.hitbox.sz = Math.max(1e-4, json.hitbox.sz + delta);
+                if (axis == 0) json.hitbox.sx = Math.max(MIN_HITBOX_EXTENT, json.hitbox.sx + delta);
+                else if (axis == 1) json.hitbox.sy = Math.max(MIN_HITBOX_EXTENT, json.hitbox.sy + delta);
+                else json.hitbox.sz = Math.max(MIN_HITBOX_EXTENT, json.hitbox.sz + delta);
                 break;
 
             case ItemDevKnob.MODE_VISUAL_OFFSET:

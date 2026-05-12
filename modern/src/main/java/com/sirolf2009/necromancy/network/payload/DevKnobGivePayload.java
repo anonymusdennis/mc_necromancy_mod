@@ -17,6 +17,9 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  */
 public record DevKnobGivePayload(BlockPos pos, int mode) implements CustomPacketPayload {
 
+    /** Maximum squared distance (blocks²) from the block entity to accept the packet. */
+    private static final double MAX_DISTANCE_SQ = 128.0;
+
     public static final Type<DevKnobGivePayload> TYPE = new Type<>(Reference.rl("dev_knob_give"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, DevKnobGivePayload> STREAM_CODEC =
@@ -34,7 +37,7 @@ public record DevKnobGivePayload(BlockPos pos, int mode) implements CustomPacket
         ctx.enqueueWork(() -> {
             if (!(ctx.player() instanceof ServerPlayer player)) return;
             if (!player.getAbilities().instabuild && !player.hasPermissions(2)) return;
-            if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(msg.pos)) > 128) return;
+            if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(msg.pos)) > MAX_DISTANCE_SQ) return;
             if (!(player.level().getBlockEntity(msg.pos) instanceof BlockEntityBodypartDev)) return;
             int mode = Math.max(0, Math.min(msg.mode(), ItemDevKnob.MODE_MAX));
             ItemStack knob = ItemDevKnob.create(mode, msg.pos);

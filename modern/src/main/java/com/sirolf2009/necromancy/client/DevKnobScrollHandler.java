@@ -35,6 +35,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 @EventBusSubscriber(modid = Reference.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public final class DevKnobScrollHandler {
 
+    private static final double STEP_COARSE  = 0.1;
+    private static final double STEP_FINE    = 0.01;
+    private static final double STEP_FINER   = 0.001;
+    private static final double STEP_FINEST  = 0.0001;
+
     private DevKnobScrollHandler() {}
 
     @SubscribeEvent
@@ -86,10 +91,10 @@ public final class DevKnobScrollHandler {
         if (Screen.hasControlDown()) count++;
         if (Screen.hasAltDown()) count++;
         return switch (count) {
-            case 1 -> 0.01;
-            case 2 -> 0.001;
-            case 3 -> 0.0001;
-            default -> 0.1;
+            case 1 -> STEP_FINE;
+            case 2 -> STEP_FINER;
+            case 3 -> STEP_FINEST;
+            default -> STEP_COARSE;
         };
     }
 }
