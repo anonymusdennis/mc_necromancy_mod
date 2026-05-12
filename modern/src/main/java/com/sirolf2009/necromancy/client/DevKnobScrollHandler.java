@@ -64,11 +64,12 @@ public final class DevKnobScrollHandler {
 
         int mode = ItemDevKnob.getMode(held);
         BlockPos blockPos = ItemDevKnob.getBlockPos(held);
+        int socketIndex = ItemDevKnob.getSocketIndex(held);
         int axis = dominantAxis(mc.player.getViewVector(1.0f));
         double step = stepFromModifiers();
         double delta = raw * step;
 
-        PacketDistributor.sendToServer(new DevKnobScrollPayload(blockPos, mode, axis, delta));
+        PacketDistributor.sendToServer(new DevKnobScrollPayload(blockPos, mode, axis, delta, socketIndex));
     }
 
     /** Returns 0 (X), 1 (Y), or 2 (Z) for the dominant component of {@code v}. */

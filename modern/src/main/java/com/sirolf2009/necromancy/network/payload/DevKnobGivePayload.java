@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 /**
  * Client → server: give the player a {@link ItemDevKnob} linked to the specified dev block in the given mode.
  */
-public record DevKnobGivePayload(BlockPos pos, int mode) implements CustomPacketPayload {
+public record DevKnobGivePayload(BlockPos pos, int mode, int socketIndex) implements CustomPacketPayload {
 
     /** Maximum squared distance (blocks²) from the block entity to accept the packet. */
     private static final double MAX_DISTANCE_SQ = 128.0;
@@ -26,6 +26,7 @@ public record DevKnobGivePayload(BlockPos pos, int mode) implements CustomPacket
         StreamCodec.composite(
             BlockPos.STREAM_CODEC, DevKnobGivePayload::pos,
             ByteBufCodecs.VAR_INT, DevKnobGivePayload::mode,
+            ByteBufCodecs.VAR_INT, DevKnobGivePayload::socketIndex,
             DevKnobGivePayload::new);
 
     @Override
@@ -40,7 +41,8 @@ public record DevKnobGivePayload(BlockPos pos, int mode) implements CustomPacket
             if (player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(msg.pos)) > MAX_DISTANCE_SQ) return;
             if (!(player.level().getBlockEntity(msg.pos) instanceof BlockEntityBodypartDev)) return;
             int mode = Math.max(0, Math.min(msg.mode(), ItemDevKnob.MODE_MAX));
-            ItemStack knob = ItemDevKnob.create(mode, msg.pos);
+            int socketIdx = Math.max(0, Math.min(msg.socketIndex(), ItemDevKnob.SOCKET_KNOB_COUNT - 1));
+            ItemStack knob = ItemDevKnob.create(mode, msg.pos, socketIdx);
             if (!player.addItem(knob)) {
                 player.drop(knob, false);
             }

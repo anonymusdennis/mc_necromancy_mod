@@ -150,29 +150,51 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         addRenderableWidget(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.save_disk"), b -> sendSave())
             .bounds(lx, ay, 132, 22).build());
 
-        // Dev knob give-buttons — two rows of three
+        // Dev knob give-buttons — three rows of three (geometry knobs) + scale + 9 socket knobs
         int kbY = ay + 28;
         int kbW = 84;
         int kbGap = 6;
         addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_hbpos"),
-            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_HITBOX_POS))
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_HITBOX_POS, 0))
             .bounds(lx, kbY, kbW, 18).build());
         addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_hbsize"),
-            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_HITBOX_SIZE))
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_HITBOX_SIZE, 0))
             .bounds(lx + kbW + kbGap, kbY, kbW, 18).build());
         addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_visoff"),
-            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_VISUAL_OFFSET))
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_VISUAL_OFFSET, 0))
             .bounds(lx + (kbW + kbGap) * 2, kbY, kbW, 18).build());
         kbY += 22;
         addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_visrot"),
-            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_VISUAL_ROT))
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_VISUAL_ROT, 0))
             .bounds(lx, kbY, kbW, 18).build());
-        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_attpos"),
-            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_ATTACH_POS))
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_scale"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_SCALE, 0))
             .bounds(lx + kbW + kbGap, kbY, kbW, 18).build());
-        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_attrot"),
-            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_ATTACH_ROT))
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_attpos"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_ATTACH_POS, 0))
             .bounds(lx + (kbW + kbGap) * 2, kbY, kbW, 18).build());
+        kbY += 22;
+        addPv(Button.builder(Component.translatable("gui.necromancy.bodypart_dev.knob_attrot"),
+            b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_ATTACH_ROT, 0))
+            .bounds(lx, kbY, kbW, 18).build());
+
+        // Socket knobs — 9 sockets × 2 modes (pos + rot) laid out in a 3-wide grid
+        kbY += 24;
+        int skW = 54;
+        int skGap = 4;
+        for (int si = 0; si < com.sirolf2009.necromancy.item.ItemDevKnob.SOCKET_KNOB_COUNT; si++) {
+            final int socketIdx = si;
+            int col = si % 3;
+            int row = si / 3;
+            int bx = lx + col * (skW * 2 + skGap * 3);
+            int by = kbY + row * 22;
+            addPv(Button.builder(Component.literal("S" + si + " pos"),
+                b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_SOCKET_POS, socketIdx))
+                .bounds(bx, by, skW, 18).build());
+            addPv(Button.builder(Component.literal("S" + si + " rot"),
+                b -> giveKnob(com.sirolf2009.necromancy.item.ItemDevKnob.MODE_SOCKET_ROT, socketIdx))
+                .bounds(bx + skW + skGap, by, skW, 18).build());
+        }
 
         pushDraftToWidgets();
         applyTabVisibility();
@@ -426,9 +448,9 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         PacketDistributor.sendToServer(new BodypartDevSavePayload(pos));
     }
 
-    private void giveKnob(int mode) {
+    private void giveKnob(int mode, int socketIndex) {
         PacketDistributor.sendToServer(
-            new com.sirolf2009.necromancy.network.payload.DevKnobGivePayload(menu.getDevBlockPos(), mode));
+            new com.sirolf2009.necromancy.network.payload.DevKnobGivePayload(menu.getDevBlockPos(), mode, socketIndex));
     }
 
     @Override

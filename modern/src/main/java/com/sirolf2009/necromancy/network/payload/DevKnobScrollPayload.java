@@ -19,14 +19,19 @@ import java.util.ArrayList;
 /**
  * Client → server: apply a scalar delta to a specific field in the bodypart dev block's draft.
  * Axis: 0=X, 1=Y, 2=Z (positional) or 0=yaw, 1=pitch, 2=roll (rotational).
+ * {@code socketIndex} is used for {@link ItemDevKnob#MODE_SOCKET_POS} and {@link ItemDevKnob#MODE_SOCKET_ROT};
+ * if the bodypart has fewer sockets than the requested index, the packet is a no-op.
  */
-public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delta) implements CustomPacketPayload {
+public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delta, int socketIndex) implements CustomPacketPayload {
 
     /** Maximum squared distance (blocks²) from the block entity to accept the packet. */
     private static final double MAX_DISTANCE_SQ = 128.0;
 
     /** Minimum hitbox full-extent to prevent collapsing to zero or negative size. */
     private static final double MIN_HITBOX_EXTENT = 1e-4;
+
+    /** Minimum visual scale to prevent inverting the mesh. */
+    private static final double MIN_SCALE = 1e-4;
 
     public static final Type<DevKnobScrollPayload> TYPE = new Type<>(Reference.rl("dev_knob_scroll"));
 
@@ -38,7 +43,8 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
                 int mode = buf.readVarInt();
                 int axis = buf.readVarInt();
                 double delta = buf.readDouble();
-                return new DevKnobScrollPayload(pos, mode, axis, delta);
+                int socketIndex = buf.readVarInt();
+                return new DevKnobScrollPayload(pos, mode, axis, delta, socketIndex);
             }
 
             @Override
@@ -47,6 +53,7 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
                 buf.writeVarInt(val.mode());
                 buf.writeVarInt(val.axis());
                 buf.writeDouble(val.delta());
+                buf.writeVarInt(val.socketIndex());
             }
         };
 
@@ -63,7 +70,7 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
             if (!(player.level().getBlockEntity(msg.pos) instanceof BlockEntityBodypartDev dev)) return;
             try {
                 BodypartDefinitionJson json = BodypartDefinitionIo.fromJson(dev.getDraftJson());
-                applyDelta(json, msg.mode(), msg.axis(), msg.delta());
+                applyDelta(json, msg.mode(), msg.axis(), msg.delta(), msg.socketIndex());
                 dev.setDraftJson(BodypartDefinitionIo.toJson(json));
             } catch (Exception ignored) {
                 // Malformed draft — skip silently
@@ -71,8 +78,8 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
         });
     }
 
-    /** Apply delta to the appropriate field of {@code json} based on mode and axis. */
-    private static void applyDelta(BodypartDefinitionJson json, int mode, int axis, double delta) {
+    /** Apply delta to the appropriate field of {@code json} based on mode, axis and socketIndex. */
+    private static void applyDelta(BodypartDefinitionJson json, int mode, int axis, double delta, int socketIndex) {
         if (json.hitbox == null) json.hitbox = new BodypartHitboxJson();
         if (json.visualOffset == null) json.visualOffset = new BodypartVisualOffsetJson();
         if (json.attachments == null) json.attachments = new ArrayList<>();
@@ -112,6 +119,37 @@ public record DevKnobScrollPayload(BlockPos pos, int mode, int axis, double delt
 
             case ItemDevKnob.MODE_ATTACH_ROT: {
                 BodypartAttachmentJson at = primaryAttachment(json);
+                if (axis == 0) at.eulerYawDeg = nvl(at.eulerYawDeg) + delta;
+                else if (axis == 1) at.eulerPitchDeg = nvl(at.eulerPitchDeg) + delta;
+                else at.eulerRollDeg = nvl(at.eulerRollDeg) + delta;
+                break;
+            }
+
+            case ItemDevKnob.MODE_SCALE: {
+                // Normalize 0.0 (absent in old JSON) to 1.0 before applying delta
+                double curSx = json.visualOffset.scaleX > 0 ? json.visualOffset.scaleX : 1.0;
+                double curSy = json.visualOffset.scaleY > 0 ? json.visualOffset.scaleY : 1.0;
+                double curSz = json.visualOffset.scaleZ > 0 ? json.visualOffset.scaleZ : 1.0;
+                if (axis == 0) json.visualOffset.scaleX = Math.max(MIN_SCALE, curSx + delta);
+                else if (axis == 1) json.visualOffset.scaleY = Math.max(MIN_SCALE, curSy + delta);
+                else json.visualOffset.scaleZ = Math.max(MIN_SCALE, curSz + delta);
+                break;
+            }
+
+            case ItemDevKnob.MODE_SOCKET_POS: {
+                // No-op if socket at socketIndex does not exist
+                if (socketIndex >= json.attachments.size()) break;
+                BodypartAttachmentJson at = json.attachments.get(socketIndex);
+                if (axis == 0) at.ox += delta;
+                else if (axis == 1) at.oy += delta;
+                else at.oz += delta;
+                break;
+            }
+
+            case ItemDevKnob.MODE_SOCKET_ROT: {
+                // No-op if socket at socketIndex does not exist
+                if (socketIndex >= json.attachments.size()) break;
+                BodypartAttachmentJson at = json.attachments.get(socketIndex);
                 if (axis == 0) at.eulerYawDeg = nvl(at.eulerYawDeg) + delta;
                 else if (axis == 1) at.eulerPitchDeg = nvl(at.eulerPitchDeg) + delta;
                 else at.eulerRollDeg = nvl(at.eulerRollDeg) + delta;
