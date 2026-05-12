@@ -111,6 +111,9 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     private static final ResourceLocation SPEED_MOD_ID =
         ResourceLocation.fromNamespaceAndPath("necromancy", "assembly_speed");
 
+    /** Minimum extent on any axis for a union broadphase AABB to be considered valid for bounding box override. */
+    private static final double MIN_BBOX_SIZE = 1e-6;
+
     /** Cached assembly snapshot.  Recomputed when the body-part data changes. */
     private MinionAssembly assembly = MinionAssembly.empty();
 
@@ -616,7 +619,7 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     public net.minecraft.world.phys.AABB makeBoundingBox() {
         if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
             net.minecraft.world.phys.AABB union = multipartHierarchy.unionBroadphaseBounds();
-            if (union.getXsize() > 1e-6 && union.getYsize() > 1e-6 && union.getZsize() > 1e-6) {
+            if (union.getXsize() > MIN_BBOX_SIZE && union.getYsize() > MIN_BBOX_SIZE && union.getZsize() > MIN_BBOX_SIZE) {
                 return union;
             }
         }

@@ -84,7 +84,8 @@ public final class MinionSkeletonBinder {
                     for (int i = 1; i < attachments.size(); i++) {
                         BodypartAttachmentJson aj = attachments.get(i);
                         String sockName = (aj.name != null && !aj.name.isBlank()) ? aj.name : ("socket_" + i);
-                        ResourceLocation sockId = Reference.rl(child.id().getPath() + "/" + sockName);
+                        // Include slot name as prefix to avoid collisions across different child parts.
+                        ResourceLocation sockId = Reference.rl(e.getKey().name().toLowerCase() + "/" + child.id().getPath() + "/" + sockName);
                         PartTransform sockTransform = aj.socketLocalTransform();
                         // childPartId=null: empty socket for future sub-part wiring.
                         child.addAttachmentPoint(new AttachmentPoint(sockId, sockTransform, SocketBindSpace.SIMULATION, null, aj.priority));

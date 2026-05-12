@@ -47,6 +47,12 @@ public final class MinionBodypartAnimator {
     private static final float TORSO_SWAY_AMP  = 0.08f;
     /** Torso forward-pitch at full walk speed. */
     private static final float TORSO_PITCH_AMP = 0.05f;
+    /**
+     * Converts the raw {@code walkAnimation.speed()} value (which is typically ≤0.15 for a walking mob)
+     * to the [0, 1] normalized range used by amplitude multipliers.  8× was chosen empirically to match
+     * vanilla zombie walk intensity at the standard mob movement speed.
+     */
+    private static final float WALK_SPEED_SCALE = 8f;
 
     private MinionBodypartAnimator() {}
 
@@ -86,7 +92,7 @@ public final class MinionBodypartAnimator {
             legPhases.put(legNodes.get(i).id(), (i % 2 == 0) ? 0f : (float) Math.PI);
         }
 
-        float normalizedSpeed = Math.min(1f, Math.abs(walkSpeed) * 8f);
+        float normalizedSpeed = Math.min(1f, Math.abs(walkSpeed) * WALK_SPEED_SCALE);
 
         for (BodyPartNode node : hierarchy.nodes()) {
             BodypartDefinition def = BodyPartConfigManager.INSTANCE.get(node.id()).orElse(null);

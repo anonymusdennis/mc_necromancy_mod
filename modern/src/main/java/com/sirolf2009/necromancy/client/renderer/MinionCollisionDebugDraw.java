@@ -22,7 +22,8 @@ import java.util.List;
 /** Client debug outlines for multipart minion collision boxes (F3+B). */
 public final class MinionCollisionDebugDraw {
 
-    private MinionCollisionDebugDraw() {}
+    /** Minimum half-extent in any axis to consider an OBB non-degenerate and worth drawing. */
+    private static final float MIN_OBB_HALF_EXTENT = 1e-5f;
 
     public static void renderMultipartBoxes(PoseStack poseStack, MultiBufferSource buffers, Vec3 camera,
                                              List<MinionCompositeCollision.SlotBox> boxes) {
@@ -75,7 +76,7 @@ public final class MinionCollisionDebugDraw {
             // Skip degenerate (zero-volume) OBBs.
             Vector3f half = new Vector3f();
             obb.halfExtentsInto(half);
-            if (half.x < 1e-5f || half.y < 1e-5f || half.z < 1e-5f) continue;
+            if (half.x < MIN_OBB_HALF_EXTENT || half.y < MIN_OBB_HALF_EXTENT || half.z < MIN_OBB_HALF_EXTENT) continue;
 
             int color = BodyPartConfigManager.INSTANCE.get(node.id())
                 .map(def -> obbColorForFlags(def.flags()))
