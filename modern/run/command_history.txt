@@ -1,7 +1,50 @@
-/effect give NecromancyDev minecraft:strength infinite 199 true
-/effect clear NecromancyDev
-/time set day
-/gamerule doDaylightCycle false
 /kill @e[type=necromancy:bodypart_preview]
-/fill ~ ~ ~ ~20 ~4 ~20 glass
-/kill @e[type=necromancy:bodypart_preview]
+/give NecromancyDev minecraft:structure_block
+/setblock ~ ~ ~ minecraft:water
+/setblock ~ ~ ~ minecraft:air
+/give NecromancyDev minecraft:repeating_command_block
+/kill @e
+/kill @e[type=minecraft:item]
+/execute at NecromancyDev run fill ~-20 ~-10 ~-20 ~20 ~-30 ~20 stone
+/execute as NecromancyDev at NecromancyDev run fill ~-20 ~-10 ~-20 ~20 ~-30 ~20 stone
+/fill ~-20 ~-10 ~-20 ~20 ~-30 ~20 stone
+/fill ~-20 ~-10 ~-20 ~20 ~-25 ~20 stone
+/effect give NecromancyDev minecraft:night_vision infinite 100 true
+/effect give NecromancyDev minecraft:resistance infinite 5 true
+/effect give NecromancyDev minecraft:night_vision infinite 100 true
+/fill -137 69 88
+/fill -137 69 88 -129 82 105 air
+/setblock -132 81 98 oak_sign
+/setblock -132 81 98 oak_sign[rotation=1]
+/setblock -132 81 98 oak_sign[rotation=5]
+/setblock -132 81 98 oak_sign[rotation=9]
+/setblock -132 81 98 minecraft:oak_wall_sign
+/setblock -132 81 98 minecraft:oak_wall_sign[facing=west]
+/setblock -132 81 98 minecraft:oak_wall_sign[facing=south]
+/fill -132 81 98 -130 81 98 minecraft:oak_wall_sign[facing=south]
+/fill -132 81 97 -130 81 97 minecraft:oak_fence
+/fill -127 73 96
+/summon boat -132.44 76.00 97.51
+/summon boat -132.46 78.00 97.60
+/summon boat -132.47 80.00 97.61
+/fill -132 82 96
+/fill -132 82 96 -130 72 98 air
+/fill -132 80 95
+/fill -133 80 96
+/summon tnt -115.31 78.00 90.60
+/summon minecraft:tnt -106.30 45.00 96.30
+/setblock -106 45 96 be
+/setblock -106 45 96 minecraft:bedrock
+/summon tnt -105.5 45.00 96.5
+/summon tnt -105.5 45.00 96.5 {Fuse:100f}
+/summon tnt -105.5 45.00 96.5 {Fuse:1000f}
+/summon tnt -105.5 45.00 96.5 {Fuse:1000}
+/summon tnt -105.5 45.00 96.5 {Fuse:80}
+/summon tnt -105.5 45.00 96.5 {Fuse:800}
+/data get entity @e[type=tnt,distance=..3,limit=1]
+/summon tnt -105.5 45.00 96.5 {Fuse:800s}
+/summon tnt -105.5 45.00 96.5 {fuse:800s}
+/setblock -106 44 97
+/setblock -106 44 96
+/give NecromancyDev minecraft:structure_block
+/kill @e[type=tnt]
