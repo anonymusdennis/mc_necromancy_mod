@@ -617,7 +617,9 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
 
     @Override
     public net.minecraft.world.phys.AABB makeBoundingBox() {
-        if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+        // multipartHierarchy field initializer runs after the super-constructor chain, so it can
+        // be null when Entity.<init> calls setPos() → makeBoundingBox() during construction.
+        if (multipartHierarchy != null && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
             net.minecraft.world.phys.AABB union = multipartHierarchy.unionBroadphaseBounds();
             if (union.getXsize() > MIN_BBOX_SIZE && union.getYsize() > MIN_BBOX_SIZE && union.getZsize() > MIN_BBOX_SIZE) {
                 return union;

@@ -36,6 +36,7 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
 
     private EditBox ox, oy, oz, sx, sy, sz;
     private EditBox vx, vy, vz;
+    private EditBox vrYaw, vrPitch, vrRoll;
     private EditBox attOx, attOy, attOz, attPri, attName;
     private EditBox pivotOx, pivotOy, pivotOz;
     private EditBox eulerYaw, eulerPitch, eulerRoll;
@@ -89,6 +90,10 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         row += rowGap;
         vx = eb(lx, row, 54, "vx"); vy = eb(lx + 58, row, 54, "vy"); vz = eb(lx + 116, row, 54, "vz");
         addGeom(vx); addGeom(vy); addGeom(vz);
+
+        row += rowGap;
+        vrYaw = eb(lx, row, 54, "vrY"); vrPitch = eb(lx + 58, row, 54, "vrP"); vrRoll = eb(lx + 116, row, 54, "vrR");
+        addGeom(vrYaw); addGeom(vrPitch); addGeom(vrRoll);
 
         row = topPos + BodypartDevLayout.CONTENT_TOP;
         chkFlagHead = Checkbox.builder(Component.translatable("gui.necromancy.bodypart_dev.slot_head"), font)
@@ -269,6 +274,9 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         vx.setValue(fmt(draft.visualOffset.dx));
         vy.setValue(fmt(draft.visualOffset.dy));
         vz.setValue(fmt(draft.visualOffset.dz));
+        vrYaw.setValue(fmt(draft.visualOffset.rotYawDeg));
+        vrPitch.setValue(fmt(draft.visualOffset.rotPitchDeg));
+        vrRoll.setValue(fmt(draft.visualOffset.rotRollDeg));
         pullAttachmentToWidgets();
     }
 
@@ -305,6 +313,9 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
         draft.visualOffset.dx = parseD(vx);
         draft.visualOffset.dy = parseD(vy);
         draft.visualOffset.dz = parseD(vz);
+        draft.visualOffset.rotYawDeg = parseD(vrYaw);
+        draft.visualOffset.rotPitchDeg = parseD(vrPitch);
+        draft.visualOffset.rotRollDeg = parseD(vrRoll);
 
         if (draft.flags == null) draft.flags = new com.sirolf2009.necromancy.bodypart.BodypartFlagsJson();
         if (chkFlagHead != null) {
@@ -406,12 +417,12 @@ public class ScreenBodypartDev extends AbstractContainerScreen<ContainerBodypart
             g.drawString(font, Component.translatable("gui.necromancy.bodypart_dev.visual_offset_section"),
                 lx, topPos + BodypartDevLayout.CONTENT_TOP + 26, 0xFFE8ECFF, true);
             g.drawString(font, Component.literal(draft.id != null ? draft.id : ""),
-                lx, topPos + BodypartDevLayout.CONTENT_TOP + 52, 0xFFAAB0C0, true);
+                lx, topPos + BodypartDevLayout.CONTENT_TOP + 74, 0xFFAAB0C0, true);
             Boolean v = draft.validated;
             g.drawString(font, Component.translatable(v != null && v
                 ? "gui.necromancy.bodypart_dev.validated_yes"
                 : "gui.necromancy.bodypart_dev.validated_no"),
-                lx, topPos + BodypartDevLayout.CONTENT_TOP + 64, hint, true);
+                lx, topPos + BodypartDevLayout.CONTENT_TOP + 86, hint, true);
         } else if (activeTab == Tab.FLAGS) {
             g.drawString(font, Component.translatable("gui.necromancy.bodypart_dev.flags_help"),
                 lx, topPos + BodypartDevLayout.CONTENT_TOP - 12, hint, true);
