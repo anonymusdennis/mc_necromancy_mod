@@ -328,6 +328,21 @@ public final class BodyPartNode {
         return new AABB(0, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Cheaply shifts all world-space cached data (simulation pose, render pose, OBB center, broadphase AABB)
+     * by {@code delta} without touching local transforms or re-propagating the hierarchy.
+     * Called by {@link com.sirolf2009.necromancy.multipart.TransformHierarchy#translateWorldPositions}
+     * to keep collision data current after the root entity is moved by physics between hierarchy ticks.
+     */
+    public void translateCachedWorldData(Vec3 delta) {
+        simulationWorld = new WorldPose(simulationWorld.position().add(delta),
+            simulationWorld.orientationCopy(), simulationWorld.scaleCopy());
+        renderWorld = new WorldPose(renderWorld.position().add(delta),
+            renderWorld.orientationCopy(), renderWorld.scaleCopy());
+        simulationCollisionObb = simulationCollisionObb.withTranslatedCenter(delta);
+        simulationBroadphase = simulationBroadphase.move(delta);
+    }
+
     /** Refresh oriented + broad-phase collision caches from current simulation pose (called by {@link com.sirolf2009.necromancy.multipart.TransformHierarchy}). */
     public void refreshSimulationCollision(WorldPose simPose) {
         if (!hitbox.collisionEnabled() || damageState.hasFlag(PartFunctionalFlag.NO_COLLISION)) {

@@ -13,6 +13,7 @@ import com.sirolf2009.necromancy.entity.ai.SwimRandomGoal;
 import com.sirolf2009.necromancy.item.NecromancyItems;
 import com.sirolf2009.necromancy.multipart.RootMobEntity;
 import com.sirolf2009.necromancy.multipart.TransformHierarchy;
+import com.sirolf2009.necromancy.multipart.broadphase.MultipartBroadphaseHooks;
 import com.sirolf2009.necromancy.multipart.damage.DamagePipeline;
 import com.sirolf2009.necromancy.multipart.damage.MultipartDamageRouter;
 import com.sirolf2009.necromancy.multipart.damage.MultipartHealthAggregate;
@@ -130,6 +131,15 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     private List<AABB> compositeCollisionBoxes = List.of();
     /** Number of LEG-flag bodypart nodes currently touching the ground (0 = airborne). */
     private int legsTouchingGroundProbe;
+
+    /**
+     * Entity position captured immediately before each {@link #multipartTick()} call.
+     * Used by {@link #makeBoundingBox()} to translate the hierarchy's stale world-space union
+     * bounds to the current entity position, preventing the minion from clipping through the
+     * ground when Minecraft's physics moves the entity during {@code super.tick()}.
+     * Null until the first hierarchy tick has run (falls back to vanilla bounds until then).
+     */
+    private Vec3 lastHierarchyTickPivot = null;
 
     private final TransformHierarchy multipartHierarchy = new TransformHierarchy();
 
@@ -392,23 +402,64 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
 
     @Override
     public void tick() {
-        super.tick();
-        // Re-resolve on both sides: client uses it for rendering / step sounds,
-        // server uses it for AI and feature ticking.
+        // Refresh assembly and tick the multipart hierarchy BEFORE super.tick() so that:
+        //  1. makeBoundingBox() returns bounds based on start-of-tick positions rather than
+        //     last tick's positions, preventing the entity from clipping through the ground.
+        //  2. legsHierarchyTouchGround() called inside aiStep() (which runs in super.tick())
+        //     reads fresh broadphase AABBs, eliminating the 1-4 frame ground-detection lag.
         refreshAssembly();
-        if (!level().isClientSide) {
-            if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
-                multipartTick();
+        // Capture entity position before super.tick() moves the entity (gravity / push-outs)
+        // so we can delta-translate compositeCollisionBoxes afterwards.
+        Vec3 pivotBeforePhysics = position();
+        if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+            lastHierarchyTickPivot = pivotBeforePhysics;
+            multipartTick();
+            if (!level().isClientSide) {
                 compositeCollisionBoxes = multipartHierarchy.collectCollisionBoxes();
-            } else {
-                compositeCollisionBoxes = MinionCompositeCollision.buildWorldBoxes(this);
             }
+        } else if (!level().isClientSide) {
+            compositeCollisionBoxes = MinionCompositeCollision.buildWorldBoxes(this);
+        }
+
+        super.tick();
+
+        // Translate compositeCollisionBoxes by the post-physics displacement so that
+        // ForgeEventHandler.onAttackEntity ray-tests see the correct position for the
+        // remainder of this tick (super.tick() may have moved the entity via gravity /
+        // push-outs after the boxes were built above).
+        if (!level().isClientSide && !compositeCollisionBoxes.isEmpty()) {
+            Vec3 posNow = position();
+            double dx = posNow.x - pivotBeforePhysics.x;
+            double dy = posNow.y - pivotBeforePhysics.y;
+            double dz = posNow.z - pivotBeforePhysics.z;
+            if (dx != 0 || dy != 0 || dz != 0) {
+                List<AABB> translated = new ArrayList<>(compositeCollisionBoxes.size());
+                for (AABB box : compositeCollisionBoxes) {
+                    translated.add(box.move(dx, dy, dz));
+                }
+                compositeCollisionBoxes = List.copyOf(translated);
+            }
+        }
+
+        // Also translate hierarchy node world poses, OBBs, and broadphase AABBs so that
+        // MultipartDamageRouter.findPartAlongSegment() and other simulationCollisionObb consumers
+        // see the final post-physics entity position for the rest of this tick.
+        if (!level().isClientSide && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+            Vec3 posNow = position();
+            Vec3 delta = posNow.subtract(pivotBeforePhysics);
+            if (delta.x != 0 || delta.y != 0 || delta.z != 0) {
+                multipartHierarchy.translateWorldPositions(delta);
+                // makeBoundingBox() translates union bounds by (currentPos - lastHierarchyTickPivot).
+                // Now that union bounds are already at posNow, update the pivot to prevent a double-shift.
+                lastHierarchyTickPivot = posNow;
+                // Re-publish broadphase so the spatial hash reflects the post-physics slot positions.
+                MultipartBroadphaseHooks.afterMultipartTick(this);
+            }
+        }
+
+        if (!level().isClientSide) {
             for (Map.Entry<BodyPartLocation, List<PartFeature>> e : features.entrySet()) {
                 for (PartFeature f : e.getValue()) f.serverTick(this, e.getKey());
-            }
-        } else {
-            if (!useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
-                multipartTick();
             }
         }
     }
@@ -619,10 +670,18 @@ public class EntityMinion extends TamableAnimal implements RootMobEntity {
     public net.minecraft.world.phys.AABB makeBoundingBox() {
         // multipartHierarchy field initializer runs after the super-constructor chain, so it can
         // be null when Entity.<init> calls setPos() → makeBoundingBox() during construction.
-        if (multipartHierarchy != null && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()) {
+        if (multipartHierarchy != null && !useLegacyCollision() && !multipartHierarchy.nodes().isEmpty()
+                && lastHierarchyTickPivot != null) {
             net.minecraft.world.phys.AABB union = multipartHierarchy.unionBroadphaseBounds();
             if (union.getXsize() > MIN_BBOX_SIZE && union.getYsize() > MIN_BBOX_SIZE && union.getZsize() > MIN_BBOX_SIZE) {
-                return union;
+                // The stored world poses were computed when the entity was at lastHierarchyTickPivot.
+                // Translate the union bounds to the current entity position so that Minecraft's
+                // collision and ground-detection always use an up-to-date bounding box, even when
+                // setPos() is called multiple times during super.tick() before the next hierarchy tick.
+                double dx = getX() - lastHierarchyTickPivot.x;
+                double dy = getY() - lastHierarchyTickPivot.y;
+                double dz = getZ() - lastHierarchyTickPivot.z;
+                return union.move(dx, dy, dz);
             }
         }
         return super.makeBoundingBox();

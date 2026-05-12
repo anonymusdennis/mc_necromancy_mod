@@ -26,6 +26,15 @@ public final class ResolvedObb {
         return new ResolvedObb(src.centerWorld, src.orientationWorld, src.halfExtents);
     }
 
+    /**
+     * Returns a new {@link ResolvedObb} with the center shifted by {@code delta};
+     * orientation and half-extents are unchanged. Avoids allocating temporary
+     * {@link Quaternionf}/{@link Vector3f} objects compared with extracting and re-passing them.
+     */
+    public ResolvedObb withTranslatedCenter(Vec3 delta) {
+        return new ResolvedObb(centerWorld.add(delta), orientationWorld, halfExtents);
+    }
+
     public Vec3 centerWorld() {
         return centerWorld;
     }
